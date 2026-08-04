@@ -99,7 +99,7 @@
         }
         .status-buttons {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -116,6 +116,17 @@
         .btn.active-ok { background-color: var(--ok-color); color: white; border-color: var(--ok-color); }
         .btn.active-fail { background-color: var(--fail-color); color: white; border-color: var(--fail-color); }
         .btn.active-note { background-color: var(--note-color); color: #333; border-color: var(--note-color); }
+        .comment-input {
+            grid-column: 1 / -1;
+            width: 100%;
+            min-height: 72px;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font: inherit;
+            resize: vertical;
+        }
         
         .navigation {
             display: flex;
@@ -179,6 +190,7 @@
         .list-content { flex: 1; }
         .list-category { display: block; color: #666; font-size: 0.8rem; margin-bottom: 3px; }
         .list-task { line-height: 1.35; }
+        .list-comment { color: #666; font-size: 0.85rem; margin-top: 5px; }
         .list-status { min-width: 5.5em; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .status-ok { color: var(--ok-color); }
         .status-note { color: #b58100; }
@@ -208,8 +220,8 @@
             
             <div class="status-buttons">
                 <button class="btn" id="btn-ok" onclick="setStatus('ok')">תקין</button>
-                <button class="btn" id="btn-note" onclick="setStatus('note')">תוקן / הערה</button>
                 <button class="btn" id="btn-fail" onclick="setStatus('fail')">לא תקין</button>
+                <textarea class="comment-input" id="comment-input" placeholder="הערה / תגובה"></textarea>
             </div>
         </div>
     </main>
@@ -220,7 +232,7 @@
         <h2 style="text-align: center;">סיכום בדיקה</h2>
         <div class="summary-stat"><span>סך הכל פריטים:</span> <span id="sum-total">0</span></div>
         <div class="summary-stat"><span>תקין:</span> <span id="sum-ok" style="color: var(--ok-color);">0</span></div>
-        <div class="summary-stat"><span>תוקן / הערה:</span> <span id="sum-note" style="color: #d39e00;">0</span></div>
+        <div class="summary-stat"><span>הערות:</span> <span id="sum-comments" style="color: #d39e00;">0</span></div>
         <div class="summary-stat"><span>לא תקין:</span> <span id="sum-fail" style="color: var(--fail-color);">0</span></div>
         <div class="summary-stat"><span>לא נבדק:</span> <span id="sum-empty">0</span></div>
         <button class="nav-btn" style="width: 100%; margin-top: 20px;" onclick="toggleSummary()">חזור לבדיקה</button>
@@ -243,6 +255,7 @@
         });
         let currentIndex = 0;
         let savedStatuses = JSON.parse(localStorage.getItem('xpeng_checklist')) || {};
+        let savedComments = JSON.parse(localStorage.getItem('xpeng_checklist_comments')) || {};
         if (localStorage.getItem('xpeng_checklist_order') !== 'category-v1') {
             const migratedStatuses = {};
             Object.entries(savedStatuses).forEach(([oldIndex, status]) => {
@@ -254,6 +267,9 @@
             localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
             localStorage.setItem('xpeng_checklist_order', 'category-v1');
         }
+        Object.keys(savedStatuses).forEach(index => {
+            if (savedStatuses[index] === 'note') delete savedStatuses[index];
+        });
 
         const els = {
             category: document.getElementById('item-category'),
@@ -265,8 +281,8 @@
             btnPrev: document.getElementById('btn-prev'),
             btnNext: document.getElementById('btn-next'),
             btnOk: document.getElementById('btn-ok'),
-            btnNote: document.getElementById('btn-note'),
             btnFail: document.getElementById('btn-fail'),
+            commentInput: document.getElementById('comment-input'),
             screenChecklist: document.getElementById('checklist-screen'),
             screenList: document.getElementById('list-screen'),
             screenSummary: document.getElementById('summary-screen'),
@@ -287,13 +303,12 @@
 
             // Reset buttons
             els.btnOk.className = 'btn';
-            els.btnNote.className = 'btn';
             els.btnFail.className = 'btn';
+            els.commentInput.value = savedComments[index] || '';
 
             // Apply saved status
             const status = savedStatuses[index];
             if (status === 'ok') els.btnOk.classList.add('active-ok');
-            if (status === 'note') els.btnNote.classList.add('active-note');
             if (status === 'fail') els.btnFail.classList.add('active-fail');
         }
 
@@ -308,6 +323,14 @@
                 setTimeout(nextItem, 300);
             }
         }
+
+        els.commentInput.addEventListener('input', () => {
+            const comment = els.commentInput.value;
+            if (comment.trim()) savedComments[currentIndex] = comment;
+            else delete savedComments[currentIndex];
+            localStorage.setItem('xpeng_checklist_comments', JSON.stringify(savedComments));
+            if (els.screenList.style.display === 'block') renderList();
+        });
 
         function nextItem() {
             if (currentIndex < checklist.length - 1) {
@@ -351,6 +374,13 @@
                 task.className = 'list-task';
                 task.textContent = item.task;
                 content.append(category, task);
+                const comment = (savedComments[index] || '').trim();
+                if (comment) {
+                    const commentPreview = document.createElement('div');
+                    commentPreview.className = 'list-comment';
+                    commentPreview.textContent = `הערה: ${comment.slice(0, 45)}${comment.length > 45 ? '…' : ''}`;
+                    content.appendChild(commentPreview);
+                }
                 const status = document.createElement('span');
                 const [label, className] = statusLabel(savedStatuses[index]);
                 status.className = `list-status ${className}`;
@@ -404,25 +434,27 @@
                 els.footer.style.display = 'none';
                 els.screenSummary.style.display = 'block';
                 
-                let ok=0, note=0, fail=0;
+                let ok=0, fail=0, comments=0;
                 for(let i=0; i<checklist.length; i++) {
                     if(savedStatuses[i] === 'ok') ok++;
-                    if(savedStatuses[i] === 'note') note++;
                     if(savedStatuses[i] === 'fail') fail++;
+                    if((savedComments[i] || '').trim()) comments++;
                 }
                 
                 document.getElementById('sum-total').textContent = checklist.length;
                 document.getElementById('sum-ok').textContent = ok;
-                document.getElementById('sum-note').textContent = note;
+                document.getElementById('sum-comments').textContent = comments;
                 document.getElementById('sum-fail').textContent = fail;
-                document.getElementById('sum-empty').textContent = checklist.length - (ok+note+fail);
+                document.getElementById('sum-empty').textContent = checklist.length - (ok+fail);
             }
         }
 
         function resetProgress() {
             if(confirm('האם אתה בטוח שברצונך למחוק את כל ההתקדמות?')) {
                 savedStatuses = {};
+                savedComments = {};
                 localStorage.removeItem('xpeng_checklist');
+                localStorage.removeItem('xpeng_checklist_comments');
                 currentIndex = 0;
                 loadItem(0);
                 if (els.screenList.style.display === 'block') renderList();
