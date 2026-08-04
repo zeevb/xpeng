@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>בדיקת מסירה Xpeng</title>
+    <style>
+        :root {
+            --primary: #1F4E79;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --ok-color: #28a745;
+            --fail-color: #dc3545;
+            --note-color: #ffc107;
+            --text-main: #333;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        .progress-container {
+            padding: 10px 15px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .progress-text {
+            font-weight: bold;
+        }
+        .reset-btn, .summary-btn {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .category {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        .task {
+            font-size: 1.4rem;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 30px;
+        }
+        .status-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        .btn.active-ok { background-color: var(--ok-color); color: white; border-color: var(--ok-color); }
+        .btn.active-fail { background-color: var(--fail-color); color: white; border-color: var(--fail-color); }
+        .btn.active-note { background-color: var(--note-color); color: #333; border-color: var(--note-color); }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #ddd;
+        }
+        .nav-btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 45%;
+        }
+        .nav-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #summary-screen {
+            display: none;
+            padding: 20px;
+            background: white;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .summary-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1.1rem;
+        }
+        .summary-stat span:last-child { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>בדיקת מסירה Xpeng</h1>
+    </header>
+
+    <div class="progress-container" id="checklist-header">
+        <span class="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
+        <div>
+            <button class="summary-btn" onclick="toggleSummary()">סיכום</button>
+            <button class="reset-btn" onclick="resetProgress()">איפוס</button>
+        </div>
+    </div>
+
+    <main id="checklist-screen">
+        <div class="card">
+            <div class="category" id="item-category">קטגוריה</div>
+            <div class="task" id="item-task">תיאור הבדיקה...</div>
+            
+            <div class="status-buttons">
+                <button class="btn" id="btn-ok" onclick="setStatus('ok')">תקין</button>
+                <button class="btn" id="btn-note" onclick="setStatus('note')">תוקן / הערה</button>
+                <button class="btn" id="btn-fail" onclick="setStatus('fail')">לא תקין</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="summary-screen">
+        <h2 style="text-align: center;">סיכום בדיקה</h2>
+        <div class="summary-stat"><span>סך הכל פריטים:</span> <span id="sum-total">0</span></div>
+        <div class="summary-stat"><span>תקין:</span> <span id="sum-ok" style="color: var(--ok-color);">0</span></div>
+        <div class="summary-stat"><span>תוקן / הערה:</span> <span id="sum-note" style="color: #d39e00;">0</span></div>
+        <div class="summary-stat"><span>לא תקין:</span> <span id="sum-fail" style="color: var(--fail-color);">0</span></div>
+        <div class="summary-stat"><span>לא נבדק:</span> <span id="sum-empty">0</span></div>
+        <button class="nav-btn" style="width: 100%; margin-top: 20px;" onclick="toggleSummary()">חזור לבדיקה</button>
+    </div>
+
+    <div class="navigation" id="checklist-footer">
+        <button class="nav-btn" id="btn-prev" onclick="prevItem()">הקודם</button>
+        <button class="nav-btn" id="btn-next" onclick="nextItem()">הבא</button>
+    </div>
+
+    <script>
+        const checklist = [{"category": "מרכב הרכב", "task": "אזור חיבור הדלתות ומסגרת לבדוק שאין עיקומים"}, {"category": "מרכב הרכב", "task": "בדיקת גג פנורמי שאין סדקים או שריטות מלמעלה ומלמטה"}, {"category": "מרכב הרכב", "task": "מבט מתחת לרכב ובדיקה שאין מכות / סימני רטיבות / בדגש על תא סוללות"}, {"category": "מרכב הרכב", "task": "בדיקת צבע עם מד עובי ופנס (למי שיש את היכולת) בדגש על כנפיים והדלתות"}, {"category": "מרכב הרכב", "task": "חיבורי דלתות גומיות וכדומה"}, {"category": "מרכב הרכב", "task": "בדיקת צ'יפים (פגיעה בצבע מאבנים) מקדימה על מכסה המנוע בעיקר"}, {"category": "מרכב הרכב", "task": "בדיקת נזקים בג'אנטים"}, {"category": "מרכב הרכב", "task": "צמיגים - לבדוק שאין ברגים/חתכים"}, {"category": "תוכנה", "task": "לבדוק את גרסת הקושחה של הרכב שמעודכן"}, {"category": "תוכנה", "task": "עדכון גרסה במקרה הצורך"}, {"category": "תאורה", "task": "בדיקת אורות ואיתותים, ברקסים, ערפל גבוה, יום וכו'"}, {"category": "תאורה", "task": "בדיקת תאורת אווירה"}, {"category": "תפעול ושליטה", "task": "הדלקת מנוע ובדיקת מערכות יחד עם נציג החברה"}, {"category": "תפעול ושליטה", "task": "בדיקה כללית למולטימדיה כולל שליטה מההגה"}, {"category": "תפעול ושליטה", "task": "בדיקת עוזר קולי open turn on ac וכדומה"}, {"category": "תפעול ושליטה", "task": "הפעלת מזגן ל-20 מעלות ובדיקת קירור (לא למהר לכבות)"}, {"category": "תפעול ושליטה", "task": "הפעלת חימום ל-35 מעלות ובדיקת חימום (לכבות כשחם)"}, {"category": "תפעול ושליטה", "task": "לוודא שכרית נוסע פעילה"}, {"category": "תפעול ושליטה", "task": "בדיקת פתחי מיזוג אוויר מקדימה ומאחורה כולל כיוון מכני"}, {"category": "תפעול ושליטה", "task": "הפעלת וישרים קדימה אחורה"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה שקע USB קדימה ואחורה (לשים לב שנדרש כבל TYPE-C לבדיקה)"}, {"category": "תפעול ושליטה", "task": "קבלת הדרכת תפעול הרכב וכפתורי המסך (מומלץ להקליט לשימוש עתידי)"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה של הרכב עם נציג והדגמה של התחלת טעינה וסיום. ניסוי עצמי!"}, {"category": "אבזור פנימי", "task": "כיסא חשמלי נהג + נוסע - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "חימום וקירור כיסאות קדימה אחורה - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד מושבים בתוך הסלון לפגמים או קרעים"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד עליון בסלון לקרעים"}, {"category": "אפליקציה", "task": "פתיחת דלתות, תפעול כללי ולראות שהכל נראה תקין ויש אופציה לנהל את הרכב דרך האפליקציה"}, {"category": "אבזור נוסף", "task": "שטיחונים"}, {"category": "אבזור נוסף", "task": "לבדוק שיש מכסה מנוע קדמי פנימי מפלסטיק מתחת למכסה הברזל"}, {"category": "אבזור נוסף", "task": "שלטים תקינים"}, {"category": "אבזור נוסף", "task": "כבל טעינה לשקע ציבורי (כבל פינים מלאים)"}, {"category": "אבזור נוסף", "task": "לוודא שמקבלים שטיחי חורף (למי שהזמין)"}, {"category": "אבזור נוסף", "task": "ערכות תיקון וקומפרסור, ערכת כלים (לא לחפש גלגל ספייר כי אין)"}, {"category": "אבזור נוסף", "task": "בדיקת המצאות איתוראן (אם נרכש)"}, {"category": "אבזור נוסף", "task": "בדיקת ציפוי NANO (אם נרכש) ע\"י שפיכת מים על כנף - אמור כמעט ולא להישאר מים, רק כמה טיפות"}, {"category": "אבזור נוסף", "task": "בדיקת מצלמת DVR (אם נרכשה) ע\"י ניתוק חשמל וסגירה חזקה של הדלת. המצלמה אמורה להקליט"}, {"category": "אבזור נוסף - אופציונלי", "task": "וו גרירה חשמלי - בדיקה שנכנס ויוצא ויציב, לנסות טיפה להזיז אותו"}, {"category": "אופציונלי - מומלץ", "task": "להגיע לבדיקה עם דיסק און קי בפורמט FAT32 לטובת הקלטה של הדרך והפעלת פונקציית מצלמת דרך הרכב"}, {"category": "אופציונלי - PPF", "task": "בדיקה שכל הרכב מצופה כראוי ללא קילופים או פגמים. במקרה של נאנו עם PPF, להוסיף שפיכת מים"}, {"category": "אבזור הגה", "task": "לבדוק שחימום ההגה עובד ותקין"}, {"category": "אבזור נוסף", "task": "מסאג' בכיסאות - לבדוק שעובד בשני הכיסאות הקדמיים"}, {"category": "פנסים", "task": "לבדוק שאין חדירת מים, שריטות, מכות"}, {"category": "רישוי", "task": "רישוי - מספר רכב והשלדה תואמים לרישיון (כולל התאמה של הרישיון לצמיגים)"}, {"category": "תא מטען", "task": "תא מטען - פתיחה תקינה ושאין עיקומים, לבדוק פתיחה וסגירה חשמלית"}, {"category": "מד קילומטרז'", "task": "הרכב הגיע עד 150 קילומטר לכל היותר בהתאם להתחייבות בכתב ההזמנה"}, {"category": "מד סוללה", "task": "אזור ה-50 אחוז ומעלה"}];
+        let currentIndex = 0;
+        let savedStatuses = JSON.parse(localStorage.getItem('xpeng_checklist')) || {};
+
+        const els = {
+            category: document.getElementById('item-category'),
+            task: document.getElementById('item-task'),
+            idx: document.getElementById('current-idx'),
+            total: document.getElementById('total-idx'),
+            btnPrev: document.getElementById('btn-prev'),
+            btnNext: document.getElementById('btn-next'),
+            btnOk: document.getElementById('btn-ok'),
+            btnNote: document.getElementById('btn-note'),
+            btnFail: document.getElementById('btn-fail'),
+            screenChecklist: document.getElementById('checklist-screen'),
+            screenSummary: document.getElementById('summary-screen'),
+            header: document.getElementById('checklist-header'),
+            footer: document.getElementById('checklist-footer')
+        };
+
+        els.total.textContent = checklist.length;
+
+        function loadItem(index) {
+            const item = checklist[index];
+            els.category.textContent = item.category;
+            els.task.textContent = item.task;
+            els.idx.textContent = index + 1;
+
+            els.btnPrev.disabled = index === 0;
+            els.btnNext.disabled = index === checklist.length - 1;
+
+            // Reset buttons
+            els.btnOk.className = 'btn';
+            els.btnNote.className = 'btn';
+            els.btnFail.className = 'btn';
+
+            // Apply saved status
+            const status = savedStatuses[index];
+            if (status === 'ok') els.btnOk.classList.add('active-ok');
+            if (status === 'note') els.btnNote.classList.add('active-note');
+            if (status === 'fail') els.btnFail.classList.add('active-fail');
+        }
+
+        function setStatus(status) {
+            savedStatuses[currentIndex] = status;
+            localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
+            loadItem(currentIndex);
+            
+            // Auto advance if not last item
+            if (currentIndex < checklist.length - 1) {
+                setTimeout(nextItem, 300);
+            }
+        }
+
+        function nextItem() {
+            if (currentIndex < checklist.length - 1) {
+                currentIndex++;
+                loadItem(currentIndex);
+            }
+        }
+
+        function prevItem() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadItem(currentIndex);
+            }
+        }
+
+        function toggleSummary() {
+            if (els.screenSummary.style.display === 'block') {
+                els.screenSummary.style.display = 'none';
+                els.screenChecklist.style.display = 'flex';
+                els.footer.style.display = 'flex';
+            } else {
+                els.screenChecklist.style.display = 'none';
+                els.footer.style.display = 'none';
+                els.screenSummary.style.display = 'block';
+                
+                let ok=0, note=0, fail=0;
+                for(let i=0; i<checklist.length; i++) {
+                    if(savedStatuses[i] === 'ok') ok++;
+                    if(savedStatuses[i] === 'note') note++;
+                    if(savedStatuses[i] === 'fail') fail++;
+                }
+                
+                document.getElementById('sum-total').textContent = checklist.length;
+                document.getElementById('sum-ok').textContent = ok;
+                document.getElementById('sum-note').textContent = note;
+                document.getElementById('sum-fail').textContent = fail;
+                document.getElementById('sum-empty').textContent = checklist.length - (ok+note+fail);
+            }
+        }
+
+        function resetProgress() {
+            if(confirm('האם אתה בטוח שברצונך למחוק את כל ההתקדמות?')) {
+                savedStatuses = {};
+                localStorage.removeItem('xpeng_checklist');
+                currentIndex = 0;
+                loadItem(0);
+            }
+        }
+
+        // Init
+        loadItem(0);
+    </script>
+</body>
+</html>
