@@ -177,7 +177,7 @@
         .list-item:hover, .list-item:focus { border-color: var(--primary); }
         .list-number { min-width: 2em; color: #666; font-weight: bold; }
         .list-content { flex: 1; }
-        .list-category { color: #666; font-size: 0.8rem; margin-bottom: 3px; }
+        .list-category { display: block; color: #666; font-size: 0.8rem; margin-bottom: 3px; }
         .list-task { line-height: 1.35; }
         .list-status { min-width: 5.5em; text-align: center; font-size: 0.8rem; font-weight: bold; }
         .status-ok { color: var(--ok-color); }
@@ -233,8 +233,21 @@
 
     <script>
         const checklist = [{"category": "מרכב הרכב", "task": "אזור חיבור הדלתות ומסגרת לבדוק שאין עיקומים"}, {"category": "מרכב הרכב", "task": "בדיקת גג פנורמי שאין סדקים או שריטות מלמעלה ומלמטה"}, {"category": "מרכב הרכב", "task": "מבט מתחת לרכב ובדיקה שאין מכות / סימני רטיבות / בדגש על תא סוללות"}, {"category": "מרכב הרכב", "task": "בדיקת צבע עם מד עובי ופנס (למי שיש את היכולת) בדגש על כנפיים והדלתות"}, {"category": "מרכב הרכב", "task": "חיבורי דלתות גומיות וכדומה"}, {"category": "מרכב הרכב", "task": "בדיקת צ'יפים (פגיעה בצבע מאבנים) מקדימה על מכסה המנוע בעיקר"}, {"category": "מרכב הרכב", "task": "בדיקת נזקים בג'אנטים"}, {"category": "מרכב הרכב", "task": "צמיגים - לבדוק שאין ברגים/חתכים"}, {"category": "תוכנה", "task": "לבדוק את גרסת הקושחה של הרכב שמעודכן"}, {"category": "תוכנה", "task": "עדכון גרסה במקרה הצורך"}, {"category": "תאורה", "task": "בדיקת אורות ואיתותים, ברקסים, ערפל גבוה, יום וכו'"}, {"category": "תאורה", "task": "בדיקת תאורת אווירה"}, {"category": "תפעול ושליטה", "task": "הדלקת מנוע ובדיקת מערכות יחד עם נציג החברה"}, {"category": "תפעול ושליטה", "task": "בדיקה כללית למולטימדיה כולל שליטה מההגה"}, {"category": "תפעול ושליטה", "task": "בדיקת עוזר קולי open turn on ac וכדומה"}, {"category": "תפעול ושליטה", "task": "הפעלת מזגן ל-20 מעלות ובדיקת קירור (לא למהר לכבות)"}, {"category": "תפעול ושליטה", "task": "הפעלת חימום ל-35 מעלות ובדיקת חימום (לכבות כשחם)"}, {"category": "תפעול ושליטה", "task": "לוודא שכרית נוסע פעילה"}, {"category": "תפעול ושליטה", "task": "בדיקת פתחי מיזוג אוויר מקדימה ומאחורה כולל כיוון מכני"}, {"category": "תפעול ושליטה", "task": "הפעלת וישרים קדימה אחורה"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה שקע USB קדימה ואחורה (לשים לב שנדרש כבל TYPE-C לבדיקה)"}, {"category": "תפעול ושליטה", "task": "קבלת הדרכת תפעול הרכב וכפתורי המסך (מומלץ להקליט לשימוש עתידי)"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה של הרכב עם נציג והדגמה של התחלת טעינה וסיום. ניסוי עצמי!"}, {"category": "אבזור פנימי", "task": "כיסא חשמלי נהג + נוסע - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "חימום וקירור כיסאות קדימה אחורה - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד מושבים בתוך הסלון לפגמים או קרעים"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד עליון בסלון לקרעים"}, {"category": "אפליקציה", "task": "פתיחת דלתות, תפעול כללי ולראות שהכל נראה תקין ויש אופציה לנהל את הרכב דרך האפליקציה"}, {"category": "אבזור נוסף", "task": "שטיחונים"}, {"category": "אבזור נוסף", "task": "לבדוק שיש מכסה מנוע קדמי פנימי מפלסטיק מתחת למכסה הברזל"}, {"category": "אבזור נוסף", "task": "שלטים תקינים"}, {"category": "אבזור נוסף", "task": "כבל טעינה לשקע ציבורי (כבל פינים מלאים)"}, {"category": "אבזור נוסף", "task": "לוודא שמקבלים שטיחי חורף (למי שהזמין)"}, {"category": "אבזור נוסף", "task": "ערכות תיקון וקומפרסור, ערכת כלים (לא לחפש גלגל ספייר כי אין)"}, {"category": "אבזור נוסף", "task": "בדיקת המצאות איתוראן (אם נרכש)"}, {"category": "אבזור נוסף", "task": "בדיקת ציפוי NANO (אם נרכש) ע\"י שפיכת מים על כנף - אמור כמעט ולא להישאר מים, רק כמה טיפות"}, {"category": "אבזור נוסף", "task": "בדיקת מצלמת DVR (אם נרכשה) ע\"י ניתוק חשמל וסגירה חזקה של הדלת. המצלמה אמורה להקליט"}, {"category": "אבזור נוסף - אופציונלי", "task": "וו גרירה חשמלי - בדיקה שנכנס ויוצא ויציב, לנסות טיפה להזיז אותו"}, {"category": "אופציונלי - מומלץ", "task": "להגיע לבדיקה עם דיסק און קי בפורמט FAT32 לטובת הקלטה של הדרך והפעלת פונקציית מצלמת דרך הרכב"}, {"category": "אופציונלי - PPF", "task": "בדיקה שכל הרכב מצופה כראוי ללא קילופים או פגמים. במקרה של נאנו עם PPF, להוסיף שפיכת מים"}, {"category": "אבזור הגה", "task": "לבדוק שחימום ההגה עובד ותקין"}, {"category": "אבזור נוסף", "task": "מסאג' בכיסאות - לבדוק שעובד בשני הכיסאות הקדמיים"}, {"category": "פנסים", "task": "לבדוק שאין חדירת מים, שריטות, מכות"}, {"category": "רישוי", "task": "רישוי - מספר רכב והשלדה תואמים לרישיון (כולל התאמה של הרישיון לצמיגים)"}, {"category": "תא מטען", "task": "תא מטען - פתיחה תקינה ושאין עיקומים, לבדוק פתיחה וסגירה חשמלית"}, {"category": "מד קילומטרז'", "task": "הרכב הגיע עד 150 קילומטר לכל היותר בהתאם להתחייבות בכתב ההזמנה"}, {"category": "מד סוללה", "task": "אזור ה-50 אחוז ומעלה"}];
+        const legacyChecklistOrder = checklist.slice();
+        checklist.sort((a, b) => a.category.localeCompare(b.category, 'he') || a.task.localeCompare(b.task, 'he'));
         let currentIndex = 0;
         let savedStatuses = JSON.parse(localStorage.getItem('xpeng_checklist')) || {};
+        if (localStorage.getItem('xpeng_checklist_order') !== 'category-v1') {
+            const migratedStatuses = {};
+            Object.entries(savedStatuses).forEach(([oldIndex, status]) => {
+                const oldItem = legacyChecklist[Number(oldIndex)];
+                const newIndex = oldItem && checklist.findIndex(item => item.task === oldItem.task);
+                if (newIndex >= 0) migratedStatuses[newIndex] = status;
+            });
+            savedStatuses = migratedStatuses;
+            localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
+            localStorage.setItem('xpeng_checklist_order', 'category-v1');
+        }
 
         const els = {
             category: document.getElementById('item-category'),
