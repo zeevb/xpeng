@@ -194,7 +194,7 @@
 
     <div class="progress-container" id="checklist-header">
         <span class="progress-text" id="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
-        <div>
+        <div id="header-actions">
             <button class="list-btn" onclick="showList()">רשימה</button>
             <button class="summary-btn" onclick="toggleSummary()">סיכום</button>
             <button class="reset-btn" onclick="resetProgress()">איפוס</button>
@@ -259,6 +259,7 @@
             category: document.getElementById('item-category'),
             task: document.getElementById('item-task'),
             progressText: document.getElementById('progress-text'),
+            headerActions: document.getElementById('header-actions'),
             idx: document.getElementById('current-idx'),
             total: document.getElementById('total-idx'),
             btnPrev: document.getElementById('btn-prev'),
@@ -362,6 +363,9 @@
         function showList() {
             renderList();
             els.progressText.style.display = 'none';
+            els.header.style.position = 'relative';
+            els.headerActions.style.position = 'absolute';
+            els.headerActions.style.left = '15px';
             els.screenChecklist.style.display = 'none';
             els.screenSummary.style.display = 'none';
             els.screenList.style.display = 'block';
@@ -372,6 +376,9 @@
             currentIndex = index;
             loadItem(currentIndex);
             els.progressText.style.display = '';
+            els.header.style.position = '';
+            els.headerActions.style.position = '';
+            els.headerActions.style.left = '';
             els.screenList.style.display = 'none';
             els.screenSummary.style.display = 'none';
             els.screenChecklist.style.display = 'flex';
@@ -384,6 +391,10 @@
                 els.screenChecklist.style.display = 'flex';
                 els.screenList.style.display = 'none';
                 els.footer.style.display = 'flex';
+                els.progressText.style.display = '';
+                els.header.style.position = '';
+                els.headerActions.style.position = '';
+                els.headerActions.style.left = '';
             } else {
                 els.screenChecklist.style.display = 'none';
                 els.screenList.style.display = 'none';
