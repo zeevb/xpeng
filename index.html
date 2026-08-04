@@ -193,7 +193,7 @@
     </header>
 
     <div class="progress-container" id="checklist-header">
-        <span class="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
+        <span class="progress-text" id="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
         <div>
             <button class="list-btn" onclick="showList()">רשימה</button>
             <button class="summary-btn" onclick="toggleSummary()">סיכום</button>
@@ -258,6 +258,7 @@
         const els = {
             category: document.getElementById('item-category'),
             task: document.getElementById('item-task'),
+            progressText: document.getElementById('progress-text'),
             idx: document.getElementById('current-idx'),
             total: document.getElementById('total-idx'),
             btnPrev: document.getElementById('btn-prev'),
@@ -360,6 +361,7 @@
 
         function showList() {
             renderList();
+            els.progressText.style.display = 'none';
             els.screenChecklist.style.display = 'none';
             els.screenSummary.style.display = 'none';
             els.screenList.style.display = 'block';
@@ -369,6 +371,7 @@
         function showItem(index) {
             currentIndex = index;
             loadItem(currentIndex);
+            els.progressText.style.display = '';
             els.screenList.style.display = 'none';
             els.screenSummary.style.display = 'none';
             els.screenChecklist.style.display = 'flex';
