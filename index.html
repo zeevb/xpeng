@@ -362,7 +362,8 @@
 
         function showList() {
             renderList();
-            els.progressText.style.display = 'none';
+            els.progressText.style.display = '';
+            els.progressText.style.visibility = 'hidden';
             els.header.style.position = 'relative';
             els.headerActions.style.position = 'absolute';
             els.headerActions.style.left = '15px';
@@ -376,6 +377,7 @@
             currentIndex = index;
             loadItem(currentIndex);
             els.progressText.style.display = '';
+            els.progressText.style.visibility = 'visible';
             els.header.style.position = '';
             els.headerActions.style.position = '';
             els.headerActions.style.left = '';
@@ -392,6 +394,7 @@
                 els.screenList.style.display = 'none';
                 els.footer.style.display = 'flex';
                 els.progressText.style.display = '';
+                els.progressText.style.visibility = 'visible';
                 els.header.style.position = '';
                 els.headerActions.style.position = '';
                 els.headerActions.style.left = '';
