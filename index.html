@@ -56,6 +56,15 @@
             cursor: pointer;
             font-size: 0.9rem;
         }
+        .list-btn {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
         main {
             flex: 1;
             display: flex;
@@ -144,6 +153,37 @@
             font-size: 1.1rem;
         }
         .summary-stat span:last-child { font-weight: bold; }
+        #list-screen {
+            display: none;
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .list-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 12px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            text-align: right;
+            cursor: pointer;
+            font: inherit;
+        }
+        .list-item:hover, .list-item:focus { border-color: var(--primary); }
+        .list-number { min-width: 2em; color: #666; font-weight: bold; }
+        .list-content { flex: 1; }
+        .list-category { color: #666; font-size: 0.8rem; margin-bottom: 3px; }
+        .list-task { line-height: 1.35; }
+        .list-status { min-width: 5.5em; text-align: center; font-size: 0.8rem; font-weight: bold; }
+        .status-ok { color: var(--ok-color); }
+        .status-note { color: #b58100; }
+        .status-fail { color: var(--fail-color); }
+        .status-empty { color: #777; }
     </style>
 </head>
 <body>
@@ -155,6 +195,7 @@
     <div class="progress-container" id="checklist-header">
         <span class="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
         <div>
+            <button class="list-btn" onclick="showList()">רשימה</button>
             <button class="summary-btn" onclick="toggleSummary()">סיכום</button>
             <button class="reset-btn" onclick="resetProgress()">איפוס</button>
         </div>
@@ -172,6 +213,8 @@
             </div>
         </div>
     </main>
+
+    <div id="list-screen" aria-label="רשימת פריטי הבדיקה"></div>
 
     <div id="summary-screen">
         <h2 style="text-align: center;">סיכום בדיקה</h2>
@@ -204,6 +247,7 @@
             btnNote: document.getElementById('btn-note'),
             btnFail: document.getElementById('btn-fail'),
             screenChecklist: document.getElementById('checklist-screen'),
+            screenList: document.getElementById('list-screen'),
             screenSummary: document.getElementById('summary-screen'),
             header: document.getElementById('checklist-header'),
             footer: document.getElementById('checklist-footer')
@@ -236,6 +280,7 @@
             savedStatuses[currentIndex] = status;
             localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
             loadItem(currentIndex);
+            if (els.screenList.style.display === 'block') renderList();
             
             // Auto advance if not last item
             if (currentIndex < checklist.length - 1) {
@@ -257,13 +302,69 @@
             }
         }
 
+        function statusLabel(status) {
+            if (status === 'ok') return ['תקין', 'status-ok'];
+            if (status === 'note') return ['תוקן / הערה', 'status-note'];
+            if (status === 'fail') return ['לא תקין', 'status-fail'];
+            return ['לא נבדק', 'status-empty'];
+        }
+
+        function renderList() {
+            els.screenList.innerHTML = '';
+            checklist.forEach((item, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'list-item';
+                button.setAttribute('aria-label', `פריט ${index + 1}: ${item.task}`);
+                button.onclick = () => showItem(index);
+
+                const number = document.createElement('span');
+                number.className = 'list-number';
+                number.textContent = index + 1;
+                const content = document.createElement('span');
+                content.className = 'list-content';
+                const category = document.createElement('span');
+                category.className = 'list-category';
+                category.textContent = item.category;
+                const task = document.createElement('span');
+                task.className = 'list-task';
+                task.textContent = item.task;
+                content.append(category, task);
+                const status = document.createElement('span');
+                const [label, className] = statusLabel(savedStatuses[index]);
+                status.className = `list-status ${className}`;
+                status.textContent = label;
+                button.append(number, content, status);
+                els.screenList.appendChild(button);
+            });
+        }
+
+        function showList() {
+            renderList();
+            els.screenChecklist.style.display = 'none';
+            els.screenSummary.style.display = 'none';
+            els.screenList.style.display = 'block';
+            els.footer.style.display = 'none';
+        }
+
+        function showItem(index) {
+            currentIndex = index;
+            loadItem(currentIndex);
+            els.screenList.style.display = 'none';
+            els.screenSummary.style.display = 'none';
+            els.screenChecklist.style.display = 'flex';
+            els.footer.style.display = 'flex';
+        }
+
         function toggleSummary() {
             if (els.screenSummary.style.display === 'block') {
                 els.screenSummary.style.display = 'none';
                 els.screenChecklist.style.display = 'flex';
+                els.screenList.style.display = 'none';
                 els.footer.style.display = 'flex';
             } else {
                 els.screenChecklist.style.display = 'none';
+                els.screenList.style.display = 'none';
                 els.footer.style.display = 'none';
                 els.screenSummary.style.display = 'block';
                 
@@ -288,6 +389,7 @@
                 localStorage.removeItem('xpeng_checklist');
                 currentIndex = 0;
                 loadItem(0);
+                if (els.screenList.style.display === 'block') renderList();
             }
         }
 
