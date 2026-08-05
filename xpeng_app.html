@@ -170,6 +170,20 @@
             flex: 1;
             overflow-y: auto;
         }
+        .list-actions {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 12px;
+        }
+        .export-btn {
+            background: var(--primary);
+            border: 1px solid var(--primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font: inherit;
+        }
         .list-item {
             width: 100%;
             display: flex;
@@ -355,6 +369,16 @@
 
         function renderList() {
             els.screenList.innerHTML = '';
+            const actions = document.createElement('div');
+            actions.className = 'list-actions';
+            const exportButton = document.createElement('button');
+            exportButton.type = 'button';
+            exportButton.className = 'export-btn';
+            exportButton.textContent = 'הורדת CSV';
+            exportButton.onclick = exportCsv;
+            actions.appendChild(exportButton);
+            els.screenList.appendChild(actions);
+
             checklist.forEach((item, index) => {
                 const button = document.createElement('button');
                 button.type = 'button';
@@ -388,6 +412,27 @@
                 button.append(number, content, status);
                 els.screenList.appendChild(button);
             });
+        }
+
+        function exportCsv() {
+            const headers = ['מספר', 'קטגוריה', 'בדיקה', 'סטטוס', 'הערה'];
+            const rows = checklist.map((item, index) => [
+                index + 1,
+                item.category,
+                item.task,
+                statusLabel(savedStatuses[index])[0],
+                (savedComments[index] || '').trim()
+            ]);
+            const csv = [headers, ...rows]
+                .map(row => row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(','))
+                .join('\r\n');
+            const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'xpeng-checklist.csv';
+            link.click();
+            URL.revokeObjectURL(url);
         }
 
         function showList() {
