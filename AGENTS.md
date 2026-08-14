@@ -6,8 +6,8 @@
 - `index.html` is the GitHub Pages landing page / app selector.
 - `xpeng_app.html` is the editable checklist source page; `checklist.html` is its published copy and must stay identical after source changes.
 - `xpeng_faq.html` is the editable FAQ source page; `faq.html` is its published copy and must stay identical after source changes.
-- `xpeng_faq_data.js` contains structured FAQ data generated from `xpeng_community_faq.md`.
-- `Xpeng_Delivery_Checklist.xlsx` and `בדיקה במסירה אקספנג 02.26.pdf` are reference checklist documents.
+- `xpeng_faq_data.js` contains structured FAQ data generated from `raw-data/xpeng_community_faq.md`.
+- `raw-data/Xpeng_Delivery_Checklist.xlsx` and `raw-data/בדיקה במסירה אקספנג 02.26.pdf` are reference checklist documents.
 
 ## Development
 

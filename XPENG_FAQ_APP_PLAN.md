@@ -9,7 +9,7 @@ Add a second, dependency-free Hebrew RTL web app containing frequently asked que
 - `xpeng_app.html` is the current checklist source.
 - `index.html` is currently the GitHub Pages entry point and is identical to the checklist source.
 - `.github/workflows/pages.yml` currently publishes only `index.html`.
-- `xpeng_community_faq.md` contains the initial FAQ content, organized by Hebrew category headings and question headings.
+- `raw-data/xpeng_community_faq.md` contains the initial FAQ content, organized by Hebrew category headings and question headings.
 - The apps must remain static, dependency-free, mobile-friendly, Hebrew RTL, and usable with English product terms such as XPILOT, CarPlay, NFC, and Android Auto.
 - Prefer native HTML and CSS behavior over JavaScript whenever they can provide the same user experience cleanly. Use JavaScript only for behavior that cannot reasonably be handled with semantic HTML/CSS, such as final search/filter logic, URL state, and persistence.
 
@@ -35,7 +35,7 @@ Before implementation, update `AGENTS.md` to replace the current “`index.html`
 
 ## Phase 1 — Confirm content and data model
 
-1. Treat `xpeng_community_faq.md` as the editorial source for the first FAQ release.
+1. Treat `raw-data/xpeng_community_faq.md` as the editorial source for the first FAQ release.
 2. Convert each category and question into structured data:
 
    ```js
@@ -74,7 +74,7 @@ Do not add a runtime dependency or require a server/API. The initial data should
 Create browser-previewable static prototypes before implementing the full FAQ behavior:
 
 - `landing_preview.html` — the proposed app-selection landing page.
-- `faq_preview.html` — the proposed FAQ layout using a representative sample of real questions and answers from `xpeng_community_faq.md`.
+- `faq_preview.html` — the proposed FAQ layout using a representative sample of real questions and answers from `raw-data/xpeng_community_faq.md`.
 
 The prototypes should demonstrate the visual direction and information architecture, including:
 

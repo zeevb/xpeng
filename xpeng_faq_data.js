@@ -1,7 +1,7 @@
-// Generated from xpeng_community_faq.md. Edit the Markdown source and regenerate this file when FAQ content changes.
+// Generated from raw-data/xpeng_community_faq.md. Edit the Markdown source and regenerate this file when FAQ content changes.
 (function () {
     window.XPENG_FAQ_META = {
-    "source": "ייצוא קבוצת WhatsApp \"קהילת אקספנג - XPENG\", מהתקופה 03.07.2026-14.08.2026",
+    "source": "סיכום ידע קהילתי",
     "disclaimer": "זהו סיכום של ניסיון, פתרונות ודעות שעלו בקהילה - לא מסמך רשמי של XPENG או היבואן. כאשר לא הייתה תשובה מוסכמת, הדבר מצוין במפורש. הגדרות ותפריטים עשויים להשתנות בין דגמים וגרסאות תוכנה.",
     "lastReviewed": "14.08.2026"
 };
