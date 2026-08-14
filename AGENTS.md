@@ -13,6 +13,7 @@
 
 - Keep the app dependency-free: HTML, CSS, and browser JavaScript only.
 - Preserve Hebrew text, RTL layout, local-storage persistence, and mobile usability.
+- Checklist item `id` values are stable storage keys. Do not change or renumber existing IDs when adding, deleting, reordering, or editing checklist rows; assign a new unused ID only for a new checklist item.
 - After editing `xpeng_app.html`, copy it to `checklist.html` and run:
 
   `sed -n '/<script>/,/<\/script>/p' xpeng_app.html | sed '1d;$d' > /tmp/xpeng-app.js && node --check /tmp/xpeng-app.js`

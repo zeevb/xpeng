@@ -240,7 +240,7 @@
     </header>
 
     <div class="progress-container" id="checklist-header">
-        <span class="progress-text" id="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
+        <span class="progress-text" id="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">48</span></span>
         <div id="header-actions">
             <button class="list-btn" onclick="showList()">רשימה</button>
             <button class="summary-btn" onclick="toggleSummary()">סיכום</button>
@@ -279,39 +279,48 @@
     </div>
 
     <script>
-        const checklist = [{"category": "מרכב הרכב", "task": "אזור חיבור הדלתות ומסגרת לבדוק שאין עיקומים"}, {"category": "מרכב הרכב", "task": "בדיקת גג פנורמי שאין סדקים או שריטות מלמעלה ומלמטה"}, {"category": "מרכב הרכב", "task": "מבט מתחת לרכב ובדיקה שאין מכות / סימני רטיבות / בדגש על תא סוללות"}, {"category": "מרכב הרכב", "task": "בדיקת צבע עם מד עובי ופנס (למי שיש את היכולת) בדגש על כנפיים והדלתות"}, {"category": "מרכב הרכב", "task": "חיבורי דלתות גומיות וכדומה"}, {"category": "מרכב הרכב", "task": "בדיקת צ'יפים (פגיעה בצבע מאבנים) מקדימה על מכסה המנוע בעיקר"}, {"category": "מרכב הרכב", "task": "בדיקת נזקים בג'אנטים"}, {"category": "מרכב הרכב", "task": "צמיגים - לבדוק שאין ברגים/חתכים"}, {"category": "תוכנה", "task": "לבדוק את גרסת הקושחה של הרכב שמעודכן"}, {"category": "תוכנה", "task": "עדכון גרסה במקרה הצורך"}, {"category": "תאורה", "task": "בדיקת אורות ואיתותים, ברקסים, ערפל גבוה, יום וכו'"}, {"category": "תאורה", "task": "בדיקת תאורת אווירה"}, {"category": "תפעול ושליטה", "task": "הדלקת מנוע ובדיקת מערכות יחד עם נציג החברה"}, {"category": "תפעול ושליטה", "task": "בדיקה כללית למולטימדיה כולל שליטה מההגה"}, {"category": "תפעול ושליטה", "task": "בדיקת עוזר קולי open turn on ac וכדומה"}, {"category": "תפעול ושליטה", "task": "הפעלת מזגן ל-20 מעלות ובדיקת קירור (לא למהר לכבות)"}, {"category": "תפעול ושליטה", "task": "הפעלת חימום ל-35 מעלות ובדיקת חימום (לכבות כשחם)"}, {"category": "תפעול ושליטה", "task": "לוודא שכרית נוסע פעילה"}, {"category": "תפעול ושליטה", "task": "בדיקת פתחי מיזוג אוויר מקדימה ומאחורה כולל כיוון מכני"}, {"category": "תפעול ושליטה", "task": "הפעלת וישרים קדימה אחורה"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה שקע USB קדימה ואחורה (לשים לב שנדרש כבל TYPE-C לבדיקה)"}, {"category": "תפעול ושליטה", "task": "קבלת הדרכת תפעול הרכב וכפתורי המסך (מומלץ להקליט לשימוש עתידי)"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה של הרכב עם נציג והדגמה של התחלת טעינה וסיום. ניסוי עצמי!"}, {"category": "אבזור פנימי", "task": "כיסא חשמלי נהג + נוסע - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "חימום וקירור כיסאות קדימה אחורה - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד מושבים בתוך הסלון לפגמים או קרעים"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד עליון בסלון לקרעים"}, {"category": "אפליקציה", "task": "פתיחת דלתות, תפעול כללי ולראות שהכל נראה תקין ויש אופציה לנהל את הרכב דרך האפליקציה"}, {"category": "אבזור נוסף", "task": "שטיחונים"}, {"category": "אבזור נוסף", "task": "לבדוק שיש מכסה מנוע קדמי פנימי מפלסטיק מתחת למכסה הברזל"}, {"category": "אבזור נוסף", "task": "שלטים תקינים"}, {"category": "אבזור נוסף", "task": "כבל טעינה לשקע ציבורי (כבל פינים מלאים)"}, {"category": "אבזור נוסף", "task": "לוודא שמקבלים שטיחי חורף (למי שהזמין)"}, {"category": "אבזור נוסף", "task": "ערכות תיקון וקומפרסור, ערכת כלים (לא לחפש גלגל ספייר כי אין)"}, {"category": "אבזור נוסף", "task": "בדיקת המצאות איתוראן (אם נרכש)"}, {"category": "אבזור נוסף", "task": "בדיקת ציפוי NANO (אם נרכש) ע\"י שפיכת מים על כנף - אמור כמעט ולא להישאר מים, רק כמה טיפות"}, {"category": "אבזור נוסף", "task": "בדיקת מצלמת DVR (אם נרכשה) ע\"י ניתוק חשמל וסגירה חזקה של הדלת. המצלמה אמורה להקליט"}, {"category": "אבזור נוסף - אופציונלי", "task": "וו גרירה חשמלי - בדיקה שנכנס ויוצא ויציב, לנסות טיפה להזיז אותו"}, {"category": "אופציונלי - מומלץ", "task": "להגיע לבדיקה עם דיסק און קי בפורמט FAT32 לטובת הקלטה של הדרך והפעלת פונקציית מצלמת דרך הרכב"}, {"category": "אופציונלי - PPF", "task": "בדיקה שכל הרכב מצופה כראוי ללא קילופים או פגמים. במקרה של נאנו עם PPF, להוסיף שפיכת מים"}, {"category": "אבזור הגה", "task": "לבדוק שחימום ההגה עובד ותקין"}, {"category": "אבזור נוסף", "task": "מסאג' בכיסאות - לבדוק שעובד בשני הכיסאות הקדמיים"}, {"category": "פנסים", "task": "לבדוק שאין חדירת מים, שריטות, מכות"}, {"category": "רישוי", "task": "רישוי - מספר רכב והשלדה תואמים לרישיון (כולל התאמה של הרישיון לצמיגים)"}, {"category": "תא מטען", "task": "תא מטען - פתיחה תקינה ושאין עיקומים, לבדוק פתיחה וסגירה חשמלית"}, {"category": "מד קילומטרז'", "task": "הרכב הגיע עד 150 קילומטר לכל היותר בהתאם להתחייבות בכתב ההזמנה"}, {"category": "מד סוללה", "task": "אזור ה-50 אחוז ומעלה"}];
-        const legacyChecklist = checklist.slice();
+        const checklist = [{"id":"check-001","category":"מרכב הרכב","task":"אזור חיבור הדלתות ומסגרת לבדוק שאין עיקומים"},{"id":"check-002","category":"מרכב הרכב","task":"בדיקת גג פנורמי שאין סדקים או שריטות מלמעלה ומלמטה"},{"id":"check-003","category":"מרכב הרכב","task":"מבט מתחת לרכב ובדיקה שאין מכות / סימני רטיבות / בדגש על תא סוללות"},{"id":"check-004","category":"מרכב הרכב","task":"בדיקת צבע עם מד עובי ופנס (למי שיש את היכולת) בדגש על כנפיים והדלתות"},{"id":"check-005","category":"מרכב הרכב","task":"חיבורי דלתות גומיות וכדומה"},{"id":"check-006","category":"מרכב הרכב","task":"בדיקת צ'יפים (פגיעה בצבע מאבנים) מקדימה על מכסה המנוע בעיקר"},{"id":"check-007","category":"מרכב הרכב","task":"בדיקת נזקים בג'אנטים"},{"id":"check-008","category":"מרכב הרכב","task":"צמיגים - לבדוק שאין ברגים/חתכים"},{"id":"check-009","category":"תוכנה","task":"לבדוק את גרסת הקושחה של הרכב שמעודכן"},{"id":"check-010","category":"תוכנה","task":"עדכון גרסה במקרה הצורך"},{"id":"check-011","category":"תאורה","task":"בדיקת אורות ואיתותים, ברקסים, ערפל גבוה, יום וכו'"},{"id":"check-012","category":"תאורה","task":"בדיקת תאורת אווירה"},{"id":"check-013","category":"תפעול ושליטה","task":"הדלקת מנוע ובדיקת מערכות יחד עם נציג החברה"},{"id":"check-014","category":"תפעול ושליטה","task":"בדיקה כללית למולטימדיה כולל שליטה מההגה"},{"id":"check-015","category":"תפעול ושליטה","task":"בדיקת עוזר קולי open turn on ac וכדומה"},{"id":"check-016","category":"תפעול ושליטה","task":"הפעלת מזגן ל-20 מעלות ובדיקת קירור (לא למהר לכבות)"},{"id":"check-017","category":"תפעול ושליטה","task":"הפעלת חימום ל-35 מעלות ובדיקת חימום (לכבות כשחם)"},{"id":"check-018","category":"תפעול ושליטה","task":"לוודא שכרית נוסע פעילה"},{"id":"check-019","category":"תפעול ושליטה","task":"בדיקת פתחי מיזוג אוויר מקדימה ומאחורה כולל כיוון מכני"},{"id":"check-020","category":"תפעול ושליטה","task":"הפעלת וישרים קדימה אחורה"},{"id":"check-021","category":"תפעול ושליטה","task":"בדיקת טעינה שקע USB קדימה ואחורה (לשים לב שנדרש כבל TYPE-C לבדיקה)"},{"id":"check-022","category":"תפעול ושליטה","task":"קבלת הדרכת תפעול הרכב וכפתורי המסך (מומלץ להקליט לשימוש עתידי)"},{"id":"check-023","category":"תפעול ושליטה","task":"בדיקת טעינה של הרכב עם נציג והדגמה של התחלת טעינה וסיום. ניסוי עצמי!"},{"id":"check-024","category":"אבזור פנימי","task":"כיסא חשמלי נהג + נוסע - בדיקת עבודה תקינה"},{"id":"check-025","category":"אבזור פנימי","task":"חימום וקירור כיסאות קדימה אחורה - בדיקת עבודה תקינה"},{"id":"check-026","category":"אבזור פנימי","task":"בדיקת ריפוד מושבים בתוך הסלון לפגמים או קרעים"},{"id":"check-027","category":"אבזור פנימי","task":"בדיקת ריפוד עליון בסלון לקרעים"},{"id":"check-028","category":"אפליקציה","task":"פתיחת דלתות, תפעול כללי ולראות שהכל נראה תקין ויש אופציה לנהל את הרכב דרך האפליקציה"},{"id":"check-029","category":"אבזור נוסף","task":"שטיחונים"},{"id":"check-030","category":"אבזור נוסף","task":"לבדוק שיש מכסה מנוע קדמי פנימי מפלסטיק מתחת למכסה הברזל"},{"id":"check-031","category":"אבזור נוסף","task":"שלטים תקינים"},{"id":"check-032","category":"אבזור נוסף","task":"כבל טעינה לשקע ציבורי (כבל פינים מלאים)"},{"id":"check-033","category":"אבזור נוסף","task":"לוודא שמקבלים שטיחי חורף (למי שהזמין)"},{"id":"check-034","category":"אבזור נוסף","task":"ערכות תיקון וקומפרסור, ערכת כלים (לא לחפש גלגל ספייר כי אין)"},{"id":"check-035","category":"אבזור נוסף","task":"בדיקת המצאות איתוראן (אם נרכש)"},{"id":"check-036","category":"אבזור נוסף","task":"בדיקת ציפוי NANO (אם נרכש) ע\"י שפיכת מים על כנף - אמור כמעט ולא להישאר מים, רק כמה טיפות"},{"id":"check-037","category":"אבזור נוסף","task":"בדיקת מצלמת DVR (אם נרכשה) ע\"י ניתוק חשמל וסגירה חזקה של הדלת. המצלמה אמורה להקליט"},{"id":"check-038","category":"אבזור נוסף - אופציונלי","task":"וו גרירה חשמלי - בדיקה שנכנס ויוצא ויציב, לנסות טיפה להזיז אותו"},{"id":"check-039","category":"אופציונלי - מומלץ","task":"להגיע לבדיקה עם דיסק און קי בפורמט FAT32 לטובת הקלטה של הדרך והפעלת פונקציית מצלמת דרך הרכב"},{"id":"check-040","category":"אופציונלי - PPF","task":"בדיקה שכל הרכב מצופה כראוי ללא קילופים או פגמים. במקרה של נאנו עם PPF, להוסיף שפיכת מים"},{"id":"check-041","category":"אבזור הגה","task":"לבדוק שחימום ההגה עובד ותקין"},{"id":"check-042","category":"אבזור נוסף","task":"מסאג' בכיסאות - לבדוק שעובד בשני הכיסאות הקדמיים"},{"id":"check-043","category":"פנסים","task":"לבדוק שאין חדירת מים, שריטות, מכות"},{"id":"check-044","category":"רישוי","task":"רישוי - מספר רכב והשלדה תואמים לרישיון (כולל התאמה של הרישיון לצמיגים)"},{"id":"check-045","category":"תא מטען","task":"תא מטען - פתיחה תקינה ושאין עיקומים, לבדוק פתיחה וסגירה חשמלית"},{"id":"check-046","category":"מד קילומטרז'","task":"הרכב הגיע עד 150 קילומטר לכל היותר בהתאם להתחייבות בכתב ההזמנה"},{"id":"check-047","category":"מד סוללה","task":"אזור ה-50 אחוז ומעלה"},{"id":"check-048","category":"אבזור נוסף","task":"מפתח פיזי לפתיחה ללא חשמל, כרטיס NFC"}];
+        const legacyChecklist = checklist.filter(item => item.id !== 'check-048');
+        const categoryV1Checklist = legacyChecklist.slice();
+        const categoryV2Checklist = checklist.slice();
         const categoryOrder = ['מרכב הרכב', 'תוכנה', 'תאורה', 'תפעול ושליטה', 'אבזור פנימי', 'אפליקציה', 'אבזור נוסף'];
-        checklist.sort((a, b) => {
+        function compareChecklistItems(a, b) {
             const aRank = categoryOrder.indexOf(a.category);
             const bRank = categoryOrder.indexOf(b.category);
             const categoryCompare = (aRank < 0 ? categoryOrder.length : aRank) - (bRank < 0 ? categoryOrder.length : bRank);
             return categoryCompare || a.category.localeCompare(b.category, 'he') || a.task.localeCompare(b.task, 'he');
-        });
+        }
+        checklist.sort(compareChecklistItems);
+        categoryV1Checklist.sort(compareChecklistItems);
+        categoryV2Checklist.sort(compareChecklistItems);
         let currentIndex = 0;
         let savedStatuses = JSON.parse(localStorage.getItem('xpeng_checklist')) || {};
         let savedComments = JSON.parse(localStorage.getItem('xpeng_checklist_comments')) || {};
-        if (localStorage.getItem('xpeng_checklist_order') !== 'category-v1') {
+        if (localStorage.getItem('xpeng_checklist_order') !== 'id-v1') {
             const migratedStatuses = {};
             const migratedComments = {};
-            Object.entries(savedStatuses).forEach(([oldIndex, status]) => {
-                const oldItem = legacyChecklist[Number(oldIndex)];
-                const newIndex = oldItem && checklist.findIndex(item => item.task === oldItem.task);
-                if (newIndex >= 0) migratedStatuses[newIndex] = status;
+            const previousOrder = localStorage.getItem('xpeng_checklist_order');
+            const previousChecklist = previousOrder === 'category-v2'
+                ? categoryV2Checklist
+                : previousOrder === 'category-v1'
+                    ? categoryV1Checklist
+                    : legacyChecklist;
+            Object.entries(savedStatuses).forEach(([oldKey, status]) => {
+                const oldItem = previousChecklist[Number(oldKey)];
+                if (oldItem) migratedStatuses[oldItem.id] = status;
             });
-            Object.entries(savedComments).forEach(([oldIndex, comment]) => {
-                const oldItem = legacyChecklist[Number(oldIndex)];
-                const newIndex = oldItem && checklist.findIndex(item => item.task === oldItem.task);
-                if (newIndex >= 0) migratedComments[newIndex] = comment;
+            Object.entries(savedComments).forEach(([oldKey, comment]) => {
+                const oldItem = previousChecklist[Number(oldKey)];
+                if (oldItem) migratedComments[oldItem.id] = comment;
             });
             savedStatuses = migratedStatuses;
             savedComments = migratedComments;
             localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
             localStorage.setItem('xpeng_checklist_comments', JSON.stringify(savedComments));
-            localStorage.setItem('xpeng_checklist_order', 'category-v1');
+            localStorage.setItem('xpeng_checklist_order', 'id-v1');
         }
-        Object.keys(savedStatuses).forEach(index => {
-            if (savedStatuses[index] === 'note') delete savedStatuses[index];
+        Object.keys(savedStatuses).forEach(id => {
+            if (savedStatuses[id] === 'note') delete savedStatuses[id];
         });
 
         const els = {
@@ -347,16 +356,16 @@
             // Reset buttons
             els.btnOk.className = 'btn';
             els.btnFail.className = 'btn';
-            els.commentInput.value = savedComments[index] || '';
+            els.commentInput.value = savedComments[item.id] || '';
 
             // Apply saved status
-            const status = savedStatuses[index];
+            const status = savedStatuses[item.id];
             if (status === 'ok') els.btnOk.classList.add('active-ok');
             if (status === 'fail') els.btnFail.classList.add('active-fail');
         }
 
         function setStatus(status) {
-            savedStatuses[currentIndex] = status;
+            savedStatuses[checklist[currentIndex].id] = status;
             localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
             loadItem(currentIndex);
             if (els.screenList.style.display === 'block') renderList();
@@ -369,8 +378,9 @@
 
         els.commentInput.addEventListener('input', () => {
             const comment = els.commentInput.value;
-            if (comment.trim()) savedComments[currentIndex] = comment;
-            else delete savedComments[currentIndex];
+            const itemId = checklist[currentIndex].id;
+            if (comment.trim()) savedComments[itemId] = comment;
+            else delete savedComments[itemId];
             localStorage.setItem('xpeng_checklist_comments', JSON.stringify(savedComments));
             if (els.screenList.style.display === 'block') renderList();
         });
@@ -427,7 +437,7 @@
                 task.className = 'list-task';
                 task.textContent = item.task;
                 content.append(category, task);
-                const comment = (savedComments[index] || '').trim();
+                const comment = (savedComments[item.id] || '').trim();
                 if (comment) {
                     const commentPreview = document.createElement('div');
                     commentPreview.className = 'list-comment';
@@ -435,7 +445,7 @@
                     content.appendChild(commentPreview);
                 }
                 const status = document.createElement('span');
-                const [label, className] = statusLabel(savedStatuses[index]);
+                const [label, className] = statusLabel(savedStatuses[item.id]);
                 status.className = `list-status ${className}`;
                 status.textContent = label;
                 button.append(number, content, status);
@@ -449,8 +459,8 @@
                 index + 1,
                 item.category,
                 item.task,
-                statusLabel(savedStatuses[index])[0],
-                (savedComments[index] || '').trim()
+                statusLabel(savedStatuses[item.id])[0],
+                (savedComments[item.id] || '').trim()
             ]);
             const csv = [headers, ...rows]
                 .map(row => row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(','))
@@ -510,9 +520,10 @@
 
                 let ok=0, fail=0, comments=0;
                 for(let i=0; i<checklist.length; i++) {
-                    if(savedStatuses[i] === 'ok') ok++;
-                    if(savedStatuses[i] === 'fail') fail++;
-                    if((savedComments[i] || '').trim()) comments++;
+                    const itemId = checklist[i].id;
+                    if(savedStatuses[itemId] === 'ok') ok++;
+                    if(savedStatuses[itemId] === 'fail') fail++;
+                    if((savedComments[itemId] || '').trim()) comments++;
                 }
 
                 document.getElementById('sum-total').textContent = checklist.length;
