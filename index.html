@@ -1,521 +1,95 @@
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>בדיקת מסירה Xpeng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XPENG | כלים לקהילה</title>
     <style>
         :root {
-            --primary: #1F4E79;
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --ok-color: #28a745;
-            --fail-color: #dc3545;
-            --note-color: #ffc107;
-            --text-main: #333;
+            --navy: #173d63;
+            --blue: #2d76ae;
+            --sky: #eaf4fb;
+            --ink: #173047;
+            --muted: #607486;
+            --line: #dce7ef;
+            --surface: #fff;
         }
+        * { box-sizing: border-box; }
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: var(--bg-color);
             margin: 0;
-            padding: 0;
-            color: var(--text-main);
+            min-height: 100vh;
+            color: var(--ink);
+            background: linear-gradient(160deg, #f7fbfd 0%, #eaf3f8 100%);
+            font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+        }
+        .shell { width: min(1060px, calc(100% - 32px)); margin: 0 auto; }
+        header { padding: 28px 0 18px; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--navy); font-weight: 800; letter-spacing: .03em; }
+        .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: white; background: var(--navy); font-weight: 900; }
+        main { padding: 42px 0 64px; }
+        .hero { max-width: 720px; margin-bottom: 34px; }
+        .eyebrow { color: var(--blue); font-weight: 800; font-size: .9rem; }
+        h1 { margin: 8px 0 14px; color: var(--navy); font-size: clamp(2rem, 5vw, 3.7rem); line-height: 1.08; }
+        .apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+        .app-card {
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 260px;
+            padding: 26px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: var(--surface);
+            box-shadow: 0 12px 30px rgba(23, 61, 99, .08);
+            text-decoration: none;
+            transition: transform .18s ease, box-shadow .18s ease;
         }
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .app-card:hover, .app-card:focus-visible { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(23, 61, 99, .14); outline: none; }
+        .app-icon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 22px; border-radius: 16px; color: var(--blue); background: var(--sky); font-size: 1.45rem; font-weight: 900; }
+        h2 { margin: 0 0 10px; color: var(--navy); font-size: 1.4rem; }
+        .app-card p { margin: 0; color: var(--muted); line-height: 1.65; }
+        .card-link { margin-top: auto; padding-top: 24px; color: var(--blue); font-weight: 800; }
+        .future { border-style: dashed; background: rgba(255,255,255,.55); box-shadow: none; cursor: default; }
+        .future:hover { transform: none; box-shadow: none; }
+        .future .app-icon { color: var(--muted); background: #f1f4f6; }
+        @media (max-width: 680px) {
+            .shell { width: min(100% - 24px, 540px); }
+            main { padding-top: 28px; }
+            .apps { grid-template-columns: 1fr; }
+            .app-card { min-height: 220px; }
         }
-        h1 {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-        .progress-container {
-            padding: 10px 15px;
-            background: white;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .progress-text {
-            font-weight: bold;
-        }
-        .reset-btn, .summary-btn {
-            background: none;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .list-btn {
-            background: none;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            text-align: center;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .category {
-            font-size: 0.9rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-        .task {
-            font-size: 1.4rem;
-            font-weight: 500;
-            line-height: 1.4;
-            margin-bottom: 30px;
-        }
-        .status-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .btn {
-            padding: 15px;
-            font-size: 1.1rem;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: bold;
-        }
-        .btn.active-ok { background-color: var(--ok-color); color: white; border-color: var(--ok-color); }
-        .btn.active-fail { background-color: var(--fail-color); color: white; border-color: var(--fail-color); }
-        .btn.active-note { background-color: var(--note-color); color: #333; border-color: var(--note-color); }
-        .comment-input {
-            grid-column: 1 / -1;
-            width: 100%;
-            min-height: 72px;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            font: inherit;
-            resize: vertical;
-        }
-        
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 20px;
-            background: white;
-            border-top: 1px solid #ddd;
-        }
-        .nav-btn {
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 45%;
-        }
-        .nav-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        #summary-screen {
-            display: none;
-            padding: 20px;
-            background: white;
-            flex: 1;
-            overflow-y: auto;
-        }
-        .summary-stat {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 1.1rem;
-        }
-        .summary-stat span:last-child { font-weight: bold; }
-        #list-screen {
-            display: none;
-            padding: 15px;
-            flex: 1;
-            overflow-y: auto;
-        }
-        .list-actions {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 12px;
-        }
-        .export-btn {
-            background: var(--primary);
-            border: 1px solid var(--primary);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font: inherit;
-        }
-        .list-item {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 12px;
-            margin-bottom: 8px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: var(--card-bg);
-            color: var(--text-main);
-            text-align: right;
-            cursor: pointer;
-            font: inherit;
-        }
-        .list-item:hover, .list-item:focus { border-color: var(--primary); }
-        .list-number { min-width: 2em; color: #666; font-weight: bold; }
-        .list-content { flex: 1; }
-        .list-category { display: block; color: #666; font-size: 0.8rem; margin-bottom: 3px; }
-        .list-task { line-height: 1.35; }
-        .list-comment { color: #666; font-size: 0.85rem; margin-top: 5px; }
-        .list-status { min-width: 5.5em; text-align: center; font-size: 0.8rem; font-weight: bold; }
-        .status-ok { color: var(--ok-color); }
-        .status-note { color: #b58100; }
-        .status-fail { color: var(--fail-color); }
-        .status-empty { color: #777; }
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>בדיקת מסירה Xpeng</h1>
-    </header>
-
-    <div class="progress-container" id="checklist-header">
-        <span class="progress-text" id="progress-text">פריט <span id="current-idx">1</span> מתוך <span id="total-idx">47</span></span>
-        <div id="header-actions">
-            <button class="list-btn" onclick="showList()">רשימה</button>
-            <button class="summary-btn" onclick="toggleSummary()">סיכום</button>
-            <button class="reset-btn" onclick="resetProgress()">איפוס</button>
-        </div>
+    <div class="shell">
+        <header>
+            <div class="brand"><span class="brand-mark">X</span><span>XPENG Community</span></div>
+        </header>
+        <main>
+            <section class="hero" aria-labelledby="page-title">
+                <div class="eyebrow">כלים לקהילה</div>
+                <h1 id="page-title">כלים שיעזרו לכם עם ה־XPENG</h1>
+            </section>
+            <section class="apps" aria-label="בחירת אפליקציה">
+                <a class="app-card" href="checklist.html">
+                    <span class="app-icon" aria-hidden="true">✓</span>
+                    <h2>בדיקת מסירה</h2>
+                    <p>צ׳קליסט אינטראקטיבי לבדיקת הרכב, סימון סטטוס, הוספת הערות וסיכום התהליך.</p>
+                    <span class="card-link">פתיחת הצ׳קליסט</span>
+                </a>
+                <a class="app-card" href="faq.html">
+                    <span class="app-icon" aria-hidden="true">?</span>
+                    <h2>שאלות ותשובות מהקהילה</h2>
+                    <p>מדריך מרוכז לשאלות שחזרו בקבוצת ה־WhatsApp, לפי נושאים ובשפה פשוטה.</p>
+                    <span class="card-link">פתיחת ה־FAQ</span>
+                </a>
+                <div class="app-card future" aria-label="אפליקציות נוספות בעתיד">
+                    <span class="app-icon" aria-hidden="true">+</span>
+                    <h2>עוד כלים בדרך</h2>
+                    <p>המקום לכלים נוספים שיעזרו לקהילת XPENG — מידע, תחזוקה ושימוש יום־יומי.</p>
+                    <span class="card-link">בקרוב</span>
+                </div>
+            </section>
+        </main>
     </div>
-
-    <main id="checklist-screen">
-        <div class="card">
-            <div class="category" id="item-category">קטגוריה</div>
-            <div class="task" id="item-task">תיאור הבדיקה...</div>
-            
-            <div class="status-buttons">
-                <button class="btn" id="btn-ok" onclick="setStatus('ok')">תקין</button>
-                <button class="btn" id="btn-fail" onclick="setStatus('fail')">לא תקין</button>
-                <textarea class="comment-input" id="comment-input" placeholder="הערה / תגובה"></textarea>
-            </div>
-        </div>
-    </main>
-
-    <div id="list-screen" aria-label="רשימת פריטי הבדיקה"></div>
-
-    <div id="summary-screen">
-        <h2 style="text-align: center;">סיכום בדיקה</h2>
-        <div class="summary-stat"><span>סך הכל פריטים:</span> <span id="sum-total">0</span></div>
-        <div class="summary-stat"><span>תקין:</span> <span id="sum-ok" style="color: var(--ok-color);">0</span></div>
-        <div class="summary-stat"><span>הערות:</span> <span id="sum-comments" style="color: #d39e00;">0</span></div>
-        <div class="summary-stat"><span>לא תקין:</span> <span id="sum-fail" style="color: var(--fail-color);">0</span></div>
-        <div class="summary-stat"><span>לא נבדק:</span> <span id="sum-empty">0</span></div>
-        <button class="nav-btn" style="width: 100%; margin-top: 20px;" onclick="toggleSummary()">חזור לבדיקה</button>
-    </div>
-
-    <div class="navigation" id="checklist-footer">
-        <button class="nav-btn" id="btn-prev" onclick="prevItem()">הקודם</button>
-        <button class="nav-btn" id="btn-next" onclick="nextItem()">הבא</button>
-    </div>
-
-    <script>
-        const checklist = [{"category": "מרכב הרכב", "task": "אזור חיבור הדלתות ומסגרת לבדוק שאין עיקומים"}, {"category": "מרכב הרכב", "task": "בדיקת גג פנורמי שאין סדקים או שריטות מלמעלה ומלמטה"}, {"category": "מרכב הרכב", "task": "מבט מתחת לרכב ובדיקה שאין מכות / סימני רטיבות / בדגש על תא סוללות"}, {"category": "מרכב הרכב", "task": "בדיקת צבע עם מד עובי ופנס (למי שיש את היכולת) בדגש על כנפיים והדלתות"}, {"category": "מרכב הרכב", "task": "חיבורי דלתות גומיות וכדומה"}, {"category": "מרכב הרכב", "task": "בדיקת צ'יפים (פגיעה בצבע מאבנים) מקדימה על מכסה המנוע בעיקר"}, {"category": "מרכב הרכב", "task": "בדיקת נזקים בג'אנטים"}, {"category": "מרכב הרכב", "task": "צמיגים - לבדוק שאין ברגים/חתכים"}, {"category": "תוכנה", "task": "לבדוק את גרסת הקושחה של הרכב שמעודכן"}, {"category": "תוכנה", "task": "עדכון גרסה במקרה הצורך"}, {"category": "תאורה", "task": "בדיקת אורות ואיתותים, ברקסים, ערפל גבוה, יום וכו'"}, {"category": "תאורה", "task": "בדיקת תאורת אווירה"}, {"category": "תפעול ושליטה", "task": "הדלקת מנוע ובדיקת מערכות יחד עם נציג החברה"}, {"category": "תפעול ושליטה", "task": "בדיקה כללית למולטימדיה כולל שליטה מההגה"}, {"category": "תפעול ושליטה", "task": "בדיקת עוזר קולי open turn on ac וכדומה"}, {"category": "תפעול ושליטה", "task": "הפעלת מזגן ל-20 מעלות ובדיקת קירור (לא למהר לכבות)"}, {"category": "תפעול ושליטה", "task": "הפעלת חימום ל-35 מעלות ובדיקת חימום (לכבות כשחם)"}, {"category": "תפעול ושליטה", "task": "לוודא שכרית נוסע פעילה"}, {"category": "תפעול ושליטה", "task": "בדיקת פתחי מיזוג אוויר מקדימה ומאחורה כולל כיוון מכני"}, {"category": "תפעול ושליטה", "task": "הפעלת וישרים קדימה אחורה"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה שקע USB קדימה ואחורה (לשים לב שנדרש כבל TYPE-C לבדיקה)"}, {"category": "תפעול ושליטה", "task": "קבלת הדרכת תפעול הרכב וכפתורי המסך (מומלץ להקליט לשימוש עתידי)"}, {"category": "תפעול ושליטה", "task": "בדיקת טעינה של הרכב עם נציג והדגמה של התחלת טעינה וסיום. ניסוי עצמי!"}, {"category": "אבזור פנימי", "task": "כיסא חשמלי נהג + נוסע - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "חימום וקירור כיסאות קדימה אחורה - בדיקת עבודה תקינה"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד מושבים בתוך הסלון לפגמים או קרעים"}, {"category": "אבזור פנימי", "task": "בדיקת ריפוד עליון בסלון לקרעים"}, {"category": "אפליקציה", "task": "פתיחת דלתות, תפעול כללי ולראות שהכל נראה תקין ויש אופציה לנהל את הרכב דרך האפליקציה"}, {"category": "אבזור נוסף", "task": "שטיחונים"}, {"category": "אבזור נוסף", "task": "לבדוק שיש מכסה מנוע קדמי פנימי מפלסטיק מתחת למכסה הברזל"}, {"category": "אבזור נוסף", "task": "שלטים תקינים"}, {"category": "אבזור נוסף", "task": "כבל טעינה לשקע ציבורי (כבל פינים מלאים)"}, {"category": "אבזור נוסף", "task": "לוודא שמקבלים שטיחי חורף (למי שהזמין)"}, {"category": "אבזור נוסף", "task": "ערכות תיקון וקומפרסור, ערכת כלים (לא לחפש גלגל ספייר כי אין)"}, {"category": "אבזור נוסף", "task": "בדיקת המצאות איתוראן (אם נרכש)"}, {"category": "אבזור נוסף", "task": "בדיקת ציפוי NANO (אם נרכש) ע\"י שפיכת מים על כנף - אמור כמעט ולא להישאר מים, רק כמה טיפות"}, {"category": "אבזור נוסף", "task": "בדיקת מצלמת DVR (אם נרכשה) ע\"י ניתוק חשמל וסגירה חזקה של הדלת. המצלמה אמורה להקליט"}, {"category": "אבזור נוסף - אופציונלי", "task": "וו גרירה חשמלי - בדיקה שנכנס ויוצא ויציב, לנסות טיפה להזיז אותו"}, {"category": "אופציונלי - מומלץ", "task": "להגיע לבדיקה עם דיסק און קי בפורמט FAT32 לטובת הקלטה של הדרך והפעלת פונקציית מצלמת דרך הרכב"}, {"category": "אופציונלי - PPF", "task": "בדיקה שכל הרכב מצופה כראוי ללא קילופים או פגמים. במקרה של נאנו עם PPF, להוסיף שפיכת מים"}, {"category": "אבזור הגה", "task": "לבדוק שחימום ההגה עובד ותקין"}, {"category": "אבזור נוסף", "task": "מסאג' בכיסאות - לבדוק שעובד בשני הכיסאות הקדמיים"}, {"category": "פנסים", "task": "לבדוק שאין חדירת מים, שריטות, מכות"}, {"category": "רישוי", "task": "רישוי - מספר רכב והשלדה תואמים לרישיון (כולל התאמה של הרישיון לצמיגים)"}, {"category": "תא מטען", "task": "תא מטען - פתיחה תקינה ושאין עיקומים, לבדוק פתיחה וסגירה חשמלית"}, {"category": "מד קילומטרז'", "task": "הרכב הגיע עד 150 קילומטר לכל היותר בהתאם להתחייבות בכתב ההזמנה"}, {"category": "מד סוללה", "task": "אזור ה-50 אחוז ומעלה"}];
-        const legacyChecklist = checklist.slice();
-        const categoryOrder = ['מרכב הרכב', 'תוכנה', 'תאורה', 'תפעול ושליטה', 'אבזור פנימי', 'אפליקציה', 'אבזור נוסף'];
-        checklist.sort((a, b) => {
-            const aRank = categoryOrder.indexOf(a.category);
-            const bRank = categoryOrder.indexOf(b.category);
-            const categoryCompare = (aRank < 0 ? categoryOrder.length : aRank) - (bRank < 0 ? categoryOrder.length : bRank);
-            return categoryCompare || a.category.localeCompare(b.category, 'he') || a.task.localeCompare(b.task, 'he');
-        });
-        let currentIndex = 0;
-        let savedStatuses = JSON.parse(localStorage.getItem('xpeng_checklist')) || {};
-        let savedComments = JSON.parse(localStorage.getItem('xpeng_checklist_comments')) || {};
-        if (localStorage.getItem('xpeng_checklist_order') !== 'category-v1') {
-            const migratedStatuses = {};
-            const migratedComments = {};
-            Object.entries(savedStatuses).forEach(([oldIndex, status]) => {
-                const oldItem = legacyChecklist[Number(oldIndex)];
-                const newIndex = oldItem && checklist.findIndex(item => item.task === oldItem.task);
-                if (newIndex >= 0) migratedStatuses[newIndex] = status;
-            });
-            Object.entries(savedComments).forEach(([oldIndex, comment]) => {
-                const oldItem = legacyChecklist[Number(oldIndex)];
-                const newIndex = oldItem && checklist.findIndex(item => item.task === oldItem.task);
-                if (newIndex >= 0) migratedComments[newIndex] = comment;
-            });
-            savedStatuses = migratedStatuses;
-            savedComments = migratedComments;
-            localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
-            localStorage.setItem('xpeng_checklist_comments', JSON.stringify(savedComments));
-            localStorage.setItem('xpeng_checklist_order', 'category-v1');
-        }
-        Object.keys(savedStatuses).forEach(index => {
-            if (savedStatuses[index] === 'note') delete savedStatuses[index];
-        });
-
-        const els = {
-            category: document.getElementById('item-category'),
-            task: document.getElementById('item-task'),
-            progressText: document.getElementById('progress-text'),
-            headerActions: document.getElementById('header-actions'),
-            idx: document.getElementById('current-idx'),
-            total: document.getElementById('total-idx'),
-            btnPrev: document.getElementById('btn-prev'),
-            btnNext: document.getElementById('btn-next'),
-            btnOk: document.getElementById('btn-ok'),
-            btnFail: document.getElementById('btn-fail'),
-            commentInput: document.getElementById('comment-input'),
-            screenChecklist: document.getElementById('checklist-screen'),
-            screenList: document.getElementById('list-screen'),
-            screenSummary: document.getElementById('summary-screen'),
-            header: document.getElementById('checklist-header'),
-            footer: document.getElementById('checklist-footer')
-        };
-
-        els.total.textContent = checklist.length;
-
-        function loadItem(index) {
-            const item = checklist[index];
-            els.category.textContent = item.category;
-            els.task.textContent = item.task;
-            els.idx.textContent = index + 1;
-
-            els.btnPrev.disabled = index === 0;
-            els.btnNext.disabled = index === checklist.length - 1;
-
-            // Reset buttons
-            els.btnOk.className = 'btn';
-            els.btnFail.className = 'btn';
-            els.commentInput.value = savedComments[index] || '';
-
-            // Apply saved status
-            const status = savedStatuses[index];
-            if (status === 'ok') els.btnOk.classList.add('active-ok');
-            if (status === 'fail') els.btnFail.classList.add('active-fail');
-        }
-
-        function setStatus(status) {
-            savedStatuses[currentIndex] = status;
-            localStorage.setItem('xpeng_checklist', JSON.stringify(savedStatuses));
-            loadItem(currentIndex);
-            if (els.screenList.style.display === 'block') renderList();
-            
-            // Auto advance if not last item
-            if (currentIndex < checklist.length - 1) {
-                setTimeout(nextItem, 300);
-            }
-        }
-
-        els.commentInput.addEventListener('input', () => {
-            const comment = els.commentInput.value;
-            if (comment.trim()) savedComments[currentIndex] = comment;
-            else delete savedComments[currentIndex];
-            localStorage.setItem('xpeng_checklist_comments', JSON.stringify(savedComments));
-            if (els.screenList.style.display === 'block') renderList();
-        });
-
-        function nextItem() {
-            if (currentIndex < checklist.length - 1) {
-                currentIndex++;
-                loadItem(currentIndex);
-            }
-        }
-
-        function prevItem() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                loadItem(currentIndex);
-            }
-        }
-
-        function statusLabel(status) {
-            if (status === 'ok') return ['תקין', 'status-ok'];
-            if (status === 'note') return ['תוקן / הערה', 'status-note'];
-            if (status === 'fail') return ['לא תקין', 'status-fail'];
-            return ['לא נבדק', 'status-empty'];
-        }
-
-        function renderList() {
-            els.screenList.innerHTML = '';
-            const actions = document.createElement('div');
-            actions.className = 'list-actions';
-            const exportButton = document.createElement('button');
-            exportButton.type = 'button';
-            exportButton.className = 'export-btn';
-            exportButton.textContent = 'הורדת CSV';
-            exportButton.onclick = exportCsv;
-            actions.appendChild(exportButton);
-            els.screenList.appendChild(actions);
-
-            checklist.forEach((item, index) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'list-item';
-                button.setAttribute('aria-label', `פריט ${index + 1}: ${item.task}`);
-                button.onclick = () => showItem(index);
-
-                const number = document.createElement('span');
-                number.className = 'list-number';
-                number.textContent = index + 1;
-                const content = document.createElement('span');
-                content.className = 'list-content';
-                const category = document.createElement('span');
-                category.className = 'list-category';
-                category.textContent = item.category;
-                const task = document.createElement('span');
-                task.className = 'list-task';
-                task.textContent = item.task;
-                content.append(category, task);
-                const comment = (savedComments[index] || '').trim();
-                if (comment) {
-                    const commentPreview = document.createElement('div');
-                    commentPreview.className = 'list-comment';
-                    commentPreview.textContent = `הערה: ${comment.slice(0, 45)}${comment.length > 45 ? '…' : ''}`;
-                    content.appendChild(commentPreview);
-                }
-                const status = document.createElement('span');
-                const [label, className] = statusLabel(savedStatuses[index]);
-                status.className = `list-status ${className}`;
-                status.textContent = label;
-                button.append(number, content, status);
-                els.screenList.appendChild(button);
-            });
-        }
-
-        function exportCsv() {
-            const headers = ['מספר', 'קטגוריה', 'בדיקה', 'סטטוס', 'הערה'];
-            const rows = checklist.map((item, index) => [
-                index + 1,
-                item.category,
-                item.task,
-                statusLabel(savedStatuses[index])[0],
-                (savedComments[index] || '').trim()
-            ]);
-            const csv = [headers, ...rows]
-                .map(row => row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(','))
-                .join('\r\n');
-            const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'xpeng-checklist.csv';
-            link.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function showList() {
-            renderList();
-            els.progressText.style.display = '';
-            els.progressText.style.visibility = 'hidden';
-            els.header.style.position = 'relative';
-            els.headerActions.style.position = 'absolute';
-            els.headerActions.style.left = '15px';
-            els.screenChecklist.style.display = 'none';
-            els.screenSummary.style.display = 'none';
-            els.screenList.style.display = 'block';
-            els.footer.style.display = 'none';
-        }
-
-        function showItem(index) {
-            currentIndex = index;
-            loadItem(currentIndex);
-            els.progressText.style.display = '';
-            els.progressText.style.visibility = 'visible';
-            els.header.style.position = '';
-            els.headerActions.style.position = '';
-            els.headerActions.style.left = '';
-            els.screenList.style.display = 'none';
-            els.screenSummary.style.display = 'none';
-            els.screenChecklist.style.display = 'flex';
-            els.footer.style.display = 'flex';
-        }
-
-        function toggleSummary() {
-            if (els.screenSummary.style.display === 'block') {
-                els.screenSummary.style.display = 'none';
-                els.screenChecklist.style.display = 'flex';
-                els.screenList.style.display = 'none';
-                els.footer.style.display = 'flex';
-                els.progressText.style.display = '';
-                els.progressText.style.visibility = 'visible';
-                els.header.style.position = '';
-                els.headerActions.style.position = '';
-                els.headerActions.style.left = '';
-            } else {
-                els.screenChecklist.style.display = 'none';
-                els.screenList.style.display = 'none';
-                els.footer.style.display = 'none';
-                els.screenSummary.style.display = 'block';
-                
-                let ok=0, fail=0, comments=0;
-                for(let i=0; i<checklist.length; i++) {
-                    if(savedStatuses[i] === 'ok') ok++;
-                    if(savedStatuses[i] === 'fail') fail++;
-                    if((savedComments[i] || '').trim()) comments++;
-                }
-                
-                document.getElementById('sum-total').textContent = checklist.length;
-                document.getElementById('sum-ok').textContent = ok;
-                document.getElementById('sum-comments').textContent = comments;
-                document.getElementById('sum-fail').textContent = fail;
-                document.getElementById('sum-empty').textContent = checklist.length - (ok+fail);
-            }
-        }
-
-        function resetProgress() {
-            if(confirm('האם אתה בטוח שברצונך למחוק את כל ההתקדמות?')) {
-                savedStatuses = {};
-                savedComments = {};
-                localStorage.removeItem('xpeng_checklist');
-                localStorage.removeItem('xpeng_checklist_comments');
-                currentIndex = 0;
-                loadItem(0);
-                if (els.screenList.style.display === 'block') renderList();
-            }
-        }
-
-        // Init
-        loadItem(0);
-    </script>
 </body>
 </html>

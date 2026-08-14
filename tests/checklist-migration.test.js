@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const html = fs.readFileSync('xpeng_app.html', 'utf8');
+assert.equal(fs.readFileSync('checklist.html', 'utf8'), html, 'checklist.html should match xpeng_app.html');
 const script = html.match(/<script>\n([\s\S]*?)\n    <\/script>/)[1];
 const checklist = JSON.parse(script.match(/const checklist = (\[[\s\S]*?\]);/)[1]);
 

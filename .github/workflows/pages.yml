@@ -1,4 +1,4 @@
-name: Deploy Xpeng checklist to GitHub Pages
+name: Deploy Xpeng tools to GitHub Pages
 
 on:
   push:
@@ -31,6 +31,10 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/index.html
+          cp checklist.html _site/checklist.html
+          cp faq.html _site/faq.html
+          cp xpeng_faq_data.js _site/xpeng_faq_data.js
+          cp xpeng_faq_app.js _site/xpeng_faq_app.js
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
