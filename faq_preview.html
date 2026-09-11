@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שאלות ותשובות מהקהילה | XPENG</title>
+    <style>
+        :root { --navy: #173d63; --blue: #2d76ae; --sky: #eaf4fb; --ink: #173047; --muted: #607486; --line: #dce7ef; --surface: #fff; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); background: #f5f9fb; font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+        .shell { width: min(980px, calc(100% - 32px)); margin: 0 auto; }
+        header { padding: 22px 0; border-bottom: 1px solid var(--line); }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+        .brand { color: var(--navy); font-weight: 850; }
+        .home-link { color: var(--blue); font-size: .92rem; font-weight: 750; text-decoration: none; }
+        .home-link:hover, .home-link:focus-visible { text-decoration: underline; }
+        main { padding: 36px 0 64px; }
+        .eyebrow { color: var(--blue); font-size: .9rem; font-weight: 800; }
+        h1 { margin: 7px 0 10px; color: var(--navy); font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; }
+        .intro { max-width: 730px; margin: 0 0 24px; color: var(--muted); line-height: 1.7; }
+        .notice { margin: 0 0 24px; padding: 16px 18px; border: 1px solid #cfe4f1; border-radius: 14px; color: #35566c; background: var(--sky); line-height: 1.6; }
+        .search-preview { display: grid; gap: 8px; margin-bottom: 16px; }
+        label { color: var(--navy); font-weight: 800; }
+        input { width: 100%; padding: 15px 16px; border: 1px solid #b9cedb; border-radius: 12px; color: var(--ink); background: white; font: inherit; font-size: 1rem; }
+        input:focus { border-color: var(--blue); outline: 3px solid rgba(45,118,174,.18); }
+        .category-filter { display: grid; gap: 8px; margin-bottom: 28px; }
+        select { width: 100%; padding: 14px 16px; border: 1px solid #b9cedb; border-radius: 12px; color: var(--ink); background: white; font: inherit; font-size: 1rem; }
+        select:focus { border-color: var(--blue); outline: 3px solid rgba(45,118,174,.18); }
+        .section-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        h2 { margin: 0; color: var(--navy); font-size: 1.25rem; }
+        .count { color: var(--muted); font-size: .9rem; }
+        .faq-list { display: grid; gap: 10px; }
+        details { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: 0 5px 16px rgba(23,61,99,.05); }
+        summary { cursor: pointer; padding: 18px 20px; color: var(--navy); font-weight: 800; line-height: 1.5; }
+        summary::marker { color: var(--blue); }
+        .answer { padding: 0 20px 20px; color: #456073; line-height: 1.75; }
+        .answer p { margin: 0 0 10px; }
+        .answer p:last-child { margin-bottom: 0; }
+        .answer ol, .answer ul { margin: 8px 0 0; padding-right: 22px; }
+        .term { direction: ltr; display: inline-block; }
+        .category-label { display: inline-block; margin-bottom: 8px; color: var(--blue); font-size: .8rem; font-weight: 800; }
+        .disclaimer { margin-bottom: 22px; padding: 0; overflow: hidden; box-shadow: none; }
+        .disclaimer summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; color: #35566c; font-weight: 750; line-height: 1.5; }
+        .disclaimer summary::marker { content: ""; }
+        .disclaimer summary::-webkit-details-marker { display: none; }
+        .disclaimer summary span { flex-shrink: 0; color: var(--blue); font-size: .88rem; font-weight: 850; }
+        .disclaimer[open] summary { border-bottom: 1px solid #cfe4f1; }
+        .disclaimer p { margin: 0; padding: 13px 16px 15px; color: #35566c; line-height: 1.6; }
+        @media (max-width: 680px) { .shell { width: min(100% - 24px, 560px); } .topbar { align-items: flex-start; } main { padding-top: 28px; } summary { padding: 16px; } .answer { padding: 0 16px 17px; } }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header><div class="topbar"><div class="brand">XPENG Community FAQ</div><a class="home-link" href="landing_preview.html">← חזרה לכלים</a></div></header>
+        <main>
+            <div class="eyebrow">תצוגה מקדימה</div>
+            <h1>שאלות ותשובות מהקהילה</h1>
+      <p class="intro">תשובות שימושיות לשאלות שחזרו בקבוצת ה־WhatsApp של קהילת XPENG.</p>
+            <details class="notice disclaimer">
+                <summary>חשוב: המידע מבוסס על ניסיון קהילתי ואינו מסמך רשמי. <span>קראו עוד</span></summary>
+                <p>זהו סיכום של ניסיון, פתרונות ודעות שעלו בקהילה — לא מסמך רשמי של XPENG או היבואן. הגדרות ותפריטים עשויים להשתנות בין דגמים וגרסאות תוכנה.</p>
+            </details>
+            <div class="search-preview">
+                <label for="faq-search">מה אתם מחפשים?</label>
+                <input id="faq-search" type="search" placeholder="לדוגמה: טעינה, NFC, Android Auto..." aria-describedby="search-help">
+                <small id="search-help" class="count">בתצוגה זו שדה החיפוש מציג את המיקום והעיצוב בלבד.</small>
+            </div>
+            <div class="category-filter">
+                <label for="category-select">סינון לפי נושא</label>
+                <select id="category-select">
+                    <option>כל הנושאים</option>
+                    <option>אפליקציה, מפתחות ופתיחת הרכב</option>
+                    <option>אינטרנט, CarPlay, Android Auto ואפליקציות</option>
+                    <option>עדכוני תוכנה ותקלות מערכת</option>
+                    <option>טעינה וסוללה</option>
+                    <option>טווח וצריכת אנרגיה</option>
+                    <option>USB, מצלמות ומצב שמירה</option>
+                    <option>מיזוג, אוורור ונוחות</option>
+                    <option>XPILOT, LCC, בלימת חירום וחניה</option>
+                    <option>מסכים, ניווט ותצוגה</option>
+                    <option>שמע ודיבורית</option>
+                    <option>צמיגים, ניקוי ותחזוקה</option>
+                    <option>XCOMBO וקיצורי דרך</option>
+                    <option>קנייה ומסירת רכב</option>
+                    <option>שאלות שנותרו ללא תשובה חד־משמעית</option>
+                </select>
+            </div>
+            <div class="section-title"><h2>שאלות נפוצות</h2><span class="count">6 שאלות בתצוגה</span></div>
+            <section class="faq-list" aria-label="שאלות ותשובות">
+                <details open><summary><span class="category-label">אפליקציה, מפתחות ופתיחת הרכב</span><br>הרכב לא נפתח אוטומטית כשאני מתקרב עם הטלפון. מה לבדוק?</summary><div class="answer"><p>כדאי לבדוק שפתיחה לפי קרבה מופעלת באפליקציית XPENG, שלאפליקציה יש הרשאת מיקום מספקת ושהיא יכולה לפעול ברקע.</p><ol><li>ב־<span class="term">iPhone</span> — לבדוק הרשאת מיקום <span class="term">Always</span> / תמיד, אם האפשרות קיימת.</li><li>לוודא ש־<span class="term">Bluetooth</span> פעיל.</li><li>אם עבד בעבר והפסיק — להסיר ולהתקין מחדש את האפליקציה ולאשר מחדש את ההרשאות.</li></ol></div></details>
+                <details><summary><span class="category-label">אפליקציה, מפתחות ופתיחת הרכב</span><br>מה עושים אם אפליקציית XPENG לא עובדת בכלל?</summary><div class="answer"><p>לא כדאי להסתמך רק על הטלפון. אפשר להשתמש במפתח החכם הפיזי, בכרטיס <span class="term">NFC</span> בדגמים שבהם הוא מסופק, או במפתח דיגיטלי שהוגדר מראש ונתמך בטלפון.</p></div></details>
+                <details><summary><span class="category-label">אינטרנט, CarPlay, Android Auto ואפליקציות</span><br>איך מחברים Android Auto?</summary><div class="answer"><ol><li>להפעיל <span class="term">Bluetooth</span> ו־<span class="term">Wi‑Fi</span> בטלפון.</li><li>לבצע צימוד ראשוני בין הטלפון לרכב.</li><li>לפתוח את <span class="term">Android Auto</span> במסך הרכב ולאשר את ההרשאות.</li><li>בהתאם לדגם ולגרסה, החיבור יכול לעבוד אלחוטית או באמצעות כבל.</li></ol></div></details>
+                <details><summary><span class="category-label">טעינה וסוללה</span><br>למה בעמדת AC של 22kW הרכב מקבל בערך 10–11kW?</summary><div class="answer"><p>ההספק בפועל תלוי במגבלות המטען הפנימי של הרכב, בתשתית ובעומס בעמדה. לכן עמדת <span class="term">AC</span> של 22kW לא מבטיחה שהרכב עצמו ימשוך 22kW.</p></div></details>
+                <details><summary><span class="category-label">XPILOT, LCC, בלימת חירום וחניה</span><br>איך מפעילים מעבר נתיב אוטומטי ב־LCC?</summary><div class="answer"><p>ההגדרות עשויות להשתנות לפי דגם וגרסת תוכנה. מומלץ לקבל הסבר מנציג ולהכיר את מגבלות המערכת לפני שימוש. מערכות הסיוע אינן מחליפות נהיגה והשגחה מלאות.</p></div></details>
+                <details><summary><span class="category-label">USB, מצלמות ומצב שמירה</span><br>באיזה פורמט צריך לפרמט את ה־USB?</summary><div class="answer"><p>בתשובות שחזרו בקהילה הומלץ להשתמש ב־<span class="term">FAT32</span> עבור הקלטות. כדאי לוודא גם שהכונן מתאים, מחובר לשקע הנכון ושהרכב מזהה אותו לפני שמסתמכים עליו.</p></div></details>
+            </section>
+            <p class="count" style="margin-top: 22px;">מקור התוכן: סיכום דיונים בקהילת WhatsApp, 03.07.2026–14.08.2026 · עדכון אחרון: תצוגת preview</p>
+        </main>
+    </div>
+</body>
+</html>

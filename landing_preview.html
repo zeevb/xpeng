@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XPENG | כלים לקהילה — תצוגה מקדימה</title>
+    <style>
+        :root { --navy: #173d63; --blue: #2d76ae; --sky: #eaf4fb; --ink: #173047; --muted: #607486; --line: #dce7ef; --surface: #fff; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; color: var(--ink); background: linear-gradient(160deg, #f7fbfd 0%, #eaf3f8 100%); font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+        .shell { width: min(1060px, calc(100% - 32px)); margin: 0 auto; }
+        header { padding: 28px 0 18px; }
+        .brand { display: flex; align-items: center; gap: 12px; color: var(--navy); font-weight: 800; letter-spacing: .03em; }
+        .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: white; background: var(--navy); font-weight: 900; }
+        main { padding: 42px 0 64px; }
+        .hero { max-width: 720px; margin-bottom: 34px; }
+        .eyebrow { color: var(--blue); font-weight: 800; font-size: .9rem; }
+        h1 { margin: 8px 0 14px; color: var(--navy); font-size: clamp(2rem, 5vw, 3.7rem); line-height: 1.08; }
+        .hero p { margin: 0; color: var(--muted); font-size: 1.15rem; line-height: 1.7; }
+        .apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+        .app-card { display: flex; flex-direction: column; min-height: 260px; padding: 26px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: 0 12px 30px rgba(23, 61, 99, .08); text-decoration: none; transition: transform .18s ease, box-shadow .18s ease; }
+        .app-card:hover, .app-card:focus-visible { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(23, 61, 99, .14); outline: none; }
+        .app-icon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 22px; border-radius: 16px; color: var(--blue); background: var(--sky); font-size: 1.45rem; font-weight: 900; }
+        h2 { margin: 0 0 10px; color: var(--navy); font-size: 1.4rem; }
+        .app-card p { margin: 0; color: var(--muted); line-height: 1.65; }
+        .card-link { margin-top: auto; padding-top: 24px; color: var(--blue); font-weight: 800; }
+        .future { border-style: dashed; background: rgba(255,255,255,.55); box-shadow: none; cursor: default; }
+        .future:hover { transform: none; box-shadow: none; }
+        .future .app-icon { color: var(--muted); background: #f1f4f6; }
+        .preview-note { margin-top: 28px; padding: 14px 18px; border-radius: 12px; color: #526776; background: rgba(255,255,255,.65); font-size: .9rem; }
+        @media (max-width: 680px) { .shell { width: min(100% - 24px, 540px); } main { padding-top: 28px; } .apps { grid-template-columns: 1fr; } .app-card { min-height: 220px; } }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header><div class="brand"><span class="brand-mark">X</span><span>XPENG Community</span></div></header>
+        <main>
+            <section class="hero" aria-labelledby="page-title">
+                <div class="eyebrow">תצוגה מקדימה</div>
+                <h1 id="page-title">כלים שיעזרו לכם עם ה־XPENG</h1>
+            </section>
+            <section class="apps" aria-label="בחירת אפליקציה">
+                <a class="app-card" href="xpeng_app.html">
+                    <span class="app-icon" aria-hidden="true">✓</span>
+                    <h2>בדיקת מסירה</h2>
+                    <p>צ׳קליסט אינטראקטיבי לבדיקת הרכב, סימון סטטוס, הוספת הערות וסיכום התהליך.</p>
+                    <span class="card-link">פתיחת הצ׳קליסט ←</span>
+                </a>
+                <a class="app-card" href="faq_preview.html">
+                    <span class="app-icon" aria-hidden="true">?</span>
+                    <h2>שאלות ותשובות מהקהילה</h2>
+                    <p>מדריך מרוכז לשאלות שחזרו בקבוצת ה־WhatsApp, לפי נושאים ובשפה פשוטה.</p>
+                    <span class="card-link">פתיחת ה־FAQ ←</span>
+                </a>
+                <div class="app-card future" aria-label="אפליקציות נוספות בעתיד">
+                    <span class="app-icon" aria-hidden="true">+</span>
+                    <h2>עוד כלים בדרך</h2>
+                    <p>המקום לכלים נוספים שיעזרו לקהילת XPENG — מידע, תחזוקה ושימוש יום־יומי.</p>
+                    <span class="card-link">בקרוב</span>
+                </div>
+            </section>
+            <p class="preview-note">זהו דף תצוגה מקדימה לעיצוב ולמבנה. התוכן והקישורים עשויים להשתנות לאחר קבלת משוב.</p>
+        </main>
+    </div>
+</body>
+</html>
