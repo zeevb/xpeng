@@ -20,7 +20,10 @@ const context = {
         location: { search: '', pathname: '/faq.html' },
         history: { replaceState() {} }
     },
-    document: { createElement },
+    document: {
+        createElement,
+        createTextNode(textContent) { return { textContent }; }
+    },
     URLSearchParams
 };
 context.window.window = context.window;
@@ -81,5 +84,20 @@ assert.equal(container.children[0].tagName, 'P');
 assert.equal(container.children[0].textContent, '<img src=x onerror=alert(1)>');
 assert.equal(container.children[1].tagName, 'UL');
 assert.equal(container.children[1].children[0].textContent, 'מודגש');
+
+const deliveryAnswer = data.find(item => item.id === 'faq-1idx0rowna4').answer;
+const deliveryContainer = createElement('div');
+api.renderAnswerBlocks(deliveryContainer, deliveryAnswer);
+const checklistLink = deliveryContainer.children
+    .flatMap(block => block.children)
+    .find(child => child.tagName === 'A');
+assert.ok(checklistLink, 'delivery answer should render a clickable checklist link');
+assert.equal(checklistLink.href, 'checklist.html');
+assert.equal(checklistLink.textContent, 'צ׳ק־ליסט המסירה האינטראקטיבי');
+
+const unsafeContainer = createElement('div');
+api.renderAnswerBlocks(unsafeContainer, '[unsafe](javascript:alert%281%29)');
+assert.ok(unsafeContainer.children[0].children.every(child => child.tagName !== 'A'),
+    'unsafe link protocols should remain plain text');
 
 console.log('FAQ data and search tests passed');

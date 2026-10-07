@@ -34,7 +34,27 @@
 
     function appendTextBlock(container, tagName, text) {
         const element = document.createElement(tagName);
-        element.textContent = cleanMarkdownText(text);
+        const content = cleanMarkdownText(text);
+        const links = Array.from(content.matchAll(/\[([^\]]+)\]\(([^\s)]+)\)/g));
+        if (!links.length) {
+            element.textContent = content;
+        } else {
+            let offset = 0;
+            links.forEach(match => {
+                element.appendChild(document.createTextNode(content.slice(offset, match.index)));
+                const href = match[2];
+                if (/^(?:https?:\/\/|(?:\.\/)?[a-z0-9_-]+\.html(?:[?#].*)?$)/i.test(href)) {
+                    const link = document.createElement('a');
+                    link.href = href;
+                    link.textContent = match[1];
+                    element.appendChild(link);
+                } else {
+                    element.appendChild(document.createTextNode(match[1]));
+                }
+                offset = match.index + match[0].length;
+            });
+            element.appendChild(document.createTextNode(content.slice(offset)));
+        }
         container.appendChild(element);
         return element;
     }
