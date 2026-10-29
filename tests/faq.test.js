@@ -93,7 +93,7 @@ const checklistLink = deliveryContainer.children
     .find(child => child.tagName === 'A');
 assert.ok(checklistLink, 'delivery answer should render a clickable checklist link');
 assert.equal(checklistLink.href, 'checklist.html');
-assert.equal(checklistLink.textContent, 'צ׳ק־ליסט המסירה האינטראקטיבי');
+assert.equal(checklistLink.textContent, 'לחצו כאן לפתיחת אפליקציית צ׳ק־ליסט המסירה');
 
 const unsafeContainer = createElement('div');
 api.renderAnswerBlocks(unsafeContainer, '[unsafe](javascript:alert%281%29)');
