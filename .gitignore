@@ -1,3 +1,8 @@
 GH_PAGES_SUMMARY.md
 WhatsApp Chat with קהילת אקספנג - XPENG.txt
 raw-data/WhatsApp Chat with קהילת אקספנג - XPENG.txt
+.npm-cache/
+.playwright-cli/
+output/
+raw-data/xpeng_whatsapp_export.json
+raw-data/xpeng_whatsapp_export-*.json
