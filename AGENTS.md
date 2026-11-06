@@ -22,6 +22,16 @@
 
 - Do not commit generated temporary files or the intentionally untracked `GH_PAGES_SUMMARY.md`.
 
+## Browser testing
+
+- For UI and interaction changes, use the Playwright skill and Playwright CLI to drive a real Chromium browser against a local server. Start the server from the repository root, for example: `python3 -m http.server 8765 --bind 127.0.0.1`, then open `http://127.0.0.1:8765/faq.html` (or the page being changed).
+- Prefer the skill's CLI wrapper. If the default Chrome executable is unavailable, configure Playwright to use an installed Chromium executable. Keep browser configuration, screenshots, and other temporary artifacts in `/tmp` or `output/playwright/`; do not add project dependencies or commit artifacts for ad hoc checks.
+- Exercise actual interactions and assert the resulting DOM and URL state. For FAQ changes, check search, category filtering, result counts, empty state, opening and closing answers, and `?open=<id>` links in a new tab. Verify the linked answer opens and scrolls into view.
+- For copy-link changes, grant clipboard permissions and read back the actual clipboard. Verify the absolute URL contains only `?open=<id>`, including while search and category filters are active, and that copying does not toggle the answer. Check visible feedback and the polite live region, including the feedback reset.
+- Exercise the fallback separately by disabling the Clipboard API and checking the temporary textarea, `execCommand('copy')` call, and cleanup. If `execCommand` is simulated, report this as a fallback-path check rather than proof of actual legacy-browser clipboard support.
+- Check mobile RTL layout at a narrow viewport (for example, 375px): assert there is no horizontal overflow and visually inspect a screenshot. Inspect browser console errors and distinguish application failures from local-only analytics or missing favicon errors.
+- Run relevant existing tests (for FAQ changes: `node tests/faq.test.js`), required JavaScript syntax checks, and `git diff --check`. Report what was verified and any limits; no permanent browser test files are required for ad hoc checks.
+
 ## Deployment
 
 - GitHub Pages is deployed by `.github/workflows/pages.yml` on pushes to `main`.

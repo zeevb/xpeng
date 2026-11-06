@@ -118,6 +118,28 @@
         return `${count} שאלות נמצאו`;
     }
 
+    async function copyLink(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return;
+        } catch (_) {
+            // Older browsers and denied clipboard access use the legacy copy API.
+        }
+        const focused = document.activeElement;
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.readOnly = true;
+        textarea.style.cssText = 'position:fixed;top:0;left:-9999px;';
+        document.body.appendChild(textarea);
+        try {
+            textarea.select();
+            if (!document.execCommand('copy')) throw new Error('Copy failed');
+        } finally {
+            textarea.remove();
+            if (focused) focused.focus({ preventScroll: true });
+        }
+    }
+
     function initFaqApp() {
         const els = {
             search: document.getElementById('faq-search'),
@@ -148,7 +170,13 @@
             els.meta.textContent = `מקור התוכן: ${meta.source || 'סיכום דיונים בקהילה'} · עדכון אחרון: ${meta.lastReviewed || 'לא צוין'}`;
         }
 
+        // Allow even the last answer to align with the top of the viewport.
+        const deepLinkSpace = document.createElement('div');
+        deepLinkSpace.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(deepLinkSpace);
+
         function render() {
+            deepLinkSpace.style.height = '0px';
             const query = els.search.value;
             const category = els.category.value;
             const openId = new URLSearchParams(window.location.search).get('open');
@@ -159,6 +187,8 @@
             els.clear.hidden = !query && !category;
 
             filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'faq-item';
                 const details = document.createElement('details');
                 details.id = item.id;
                 details.open = item.id === openId;
@@ -183,12 +213,41 @@
                         updateUrl(els.search.value, els.category.value, '');
                     }
                 });
-                els.list.appendChild(details);
+                const copyButton = document.createElement('button');
+                copyButton.type = 'button';
+                copyButton.className = 'copy-link';
+                copyButton.textContent = 'העתקת קישור';
+                copyButton.setAttribute('aria-label', 'העתק קישור לשאלה');
+                let feedbackTimer;
+                copyButton.addEventListener('click', async () => {
+                    const feedback = document.getElementById('copy-feedback');
+                    clearTimeout(feedbackTimer);
+                    if (feedback) feedback.textContent = '';
+                    try {
+                        await copyLink(`${location.origin}${location.pathname}?open=${item.id}`);
+                        copyButton.textContent = 'הועתק!';
+                        if (feedback) feedback.textContent = 'הקישור לשאלה הועתק!';
+                    } catch (_) {
+                        copyButton.textContent = 'ההעתקה נכשלה';
+                        if (feedback) feedback.textContent = 'העתקת הקישור נכשלה. נסו שוב.';
+                    }
+                    feedbackTimer = setTimeout(() => {
+                        copyButton.textContent = 'העתקת קישור';
+                        if (feedback) feedback.textContent = '';
+                    }, 2000);
+                });
+                card.append(details, copyButton);
+                els.list.appendChild(card);
             });
 
             if (openId) {
                 const opened = document.getElementById(openId);
-                if (opened) opened.scrollIntoView({ block: 'nearest' });
+                if (opened) {
+                    const targetTop = opened.getBoundingClientRect().top + window.scrollY;
+                    const missingSpace = targetTop + window.innerHeight - document.documentElement.scrollHeight;
+                    deepLinkSpace.style.height = `${Math.max(0, Math.ceil(missingSpace))}px`;
+                    opened.scrollIntoView({ block: 'start' });
+                }
             }
             updateUrl(query, category, openId && filtered.some(item => item.id === openId) ? openId : '');
         }
