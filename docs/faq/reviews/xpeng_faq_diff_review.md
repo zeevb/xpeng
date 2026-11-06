@@ -2,7 +2,7 @@
 
 מקור הסקירה: `raw-data/WhatsApp Chat with קהילת אקספנג - XPENG.diff`, בעיקר התוספות מ־14.08.2026 עד 28.08.2026.
 
-מטרה: הצעות להוספות או תיקונים עבור `xpeng_faq_data.js`. בפועל כדאי לערוך את `raw-data/xpeng_community_faq.md` ולייצר מחדש את קובץ ה־JS, כי `xpeng_faq_data.js` מסומן כקובץ שנוצר אוטומטית.
+מטרה: הצעות להוספות או תיקונים עבור `xpeng_faq_data.js`. בפועל כדאי לערוך את `content/xpeng_community_faq.md` ולייצר מחדש את קובץ ה־JS, כי `xpeng_faq_data.js` מסומן כקובץ שנוצר אוטומטית.
 
 ## תיקונים מומלצים לתשובות קיימות
 

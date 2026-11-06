@@ -1,0 +1,12 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "isolated": false,
+    "userDataDir": "output/playwright/.whatsapp-profile",
+    "launchOptions": {
+      "executablePath": "/usr/bin/chromium",
+      "headless": false
+    }
+  },
+  "outputDir": "output/playwright"
+}

@@ -19,7 +19,7 @@ Do not modify checklist storage keys or checklist behavior.
 
 ## 2. Build The Initial Data
 
-Use `raw-data/WhatsApp Chat with קהילת אקספנג - XPENG.txt` as the source.
+Use `raw-data/chats/20260911/WhatsApp Chat with קהילת אקספנג - XPENG.txt` as the source.
 
 Extract:
 

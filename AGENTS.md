@@ -6,8 +6,12 @@
 - `index.html` is the GitHub Pages landing page / app selector.
 - `xpeng_app.html` is the editable checklist source page; `checklist.html` is its published copy and must stay identical after source changes.
 - `xpeng_faq.html` is the editable FAQ source page; `faq.html` is its published copy and must stay identical after source changes.
-- `xpeng_faq_data.js` contains structured FAQ data generated from `raw-data/xpeng_community_faq.md`.
-- `raw-data/Xpeng_Delivery_Checklist.xlsx` and `raw-data/בדיקה במסירה אקספנג 02.26.pdf` are reference checklist documents.
+- `xpeng_faq_data.js` contains structured FAQ data generated from `content/xpeng_community_faq.md`. Links inside FAQ answers are relative to the root app pages, not the Markdown file's directory.
+- `raw-data/checklists/` contains the reference checklist spreadsheet and PDF; `raw-data/manuals/` contains the G6 manual PDF and extracted Markdown.
+- `raw-data/chats/YYYYMMDD/` contains dated mobile chat exports, with filenames `WhatsApp Chat with <exact group name>.txt`. `raw-data/exports/` holds local, Git-ignored browser JSON checkpoints.
+- `docs/faq/reviews/` contains FAQ analysis and handoff reports; `docs/plans/`, `docs/operations/`, `docs/communications/` and `docs/deployment/` contain supporting documentation. Reports describe the state at their review date, not necessarily the current FAQ.
+- `previews/` contains design prototypes; `scripts/` contains export tooling and configuration; all automated tests are under `tests/`.
+- Keep the root HTML/JavaScript paths and `.github/workflows/pages.yml` publish list stable so app URLs, FAQ deep links, and local storage continue to work.
 
 ## Development
 
@@ -20,7 +24,7 @@
 
 - After editing `xpeng_faq.html`, copy it to `faq.html` and run JavaScript syntax checks for the FAQ scripts.
 
-- Do not commit generated temporary files or the intentionally untracked `GH_PAGES_SUMMARY.md`.
+- Do not commit generated temporary files or the intentionally untracked `docs/deployment/GH_PAGES_SUMMARY.md`.
 
 ## Browser testing
 

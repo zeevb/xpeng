@@ -1,4 +1,4 @@
-// Generated from raw-data/xpeng_community_faq.md. Edit the Markdown source and synchronize this file when FAQ content changes.
+// Generated from content/xpeng_community_faq.md. Edit the Markdown source and synchronize this file when FAQ content changes.
 (function () {
     window.XPENG_FAQ_META = {
     "source": "סיכום ידע קהילתי",
